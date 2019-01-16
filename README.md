@@ -3,12 +3,12 @@
 ## Features:
 
 ## -User Authentication (username,password)
-## -registration page
-## -ability to reset password, delete account
+## -Registration page
+## -Ability to reset password, delete account
 ## -User profile
-## -posting a product
+## -Posting a product
 ## -Shopping cart
 ## -Search for products to add
-## -product review / rating a product
-## -administration page
-## -notification for price drop
+## -Product review / rating a product
+## -Administration page
+## -Notification for price drop
