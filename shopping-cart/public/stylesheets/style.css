@@ -1,0 +1,14 @@
+.thumbnail img {
+    max-height: 250px; 
+     
+}
+
+.des {
+    width: 250px;
+}
+
+.price {
+    font-weight: bold;
+    font-size: 16px;
+    color: red;
+}
