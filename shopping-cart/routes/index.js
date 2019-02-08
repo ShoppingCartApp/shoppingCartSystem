@@ -6,8 +6,4 @@ router.get('/', function(req, res, next) {
   res.render('shop/index', { title: 'Home Page' });
 });
 
-router.get('/product', function(req, res, next) {
-  res.render('shop/product', {title: 'Product Page'});
-});
-
 module.exports = router;
