@@ -27,5 +27,11 @@ router.get('/checkout', function(req, res, next) {
   });
 });
 
+router.get('/paysuccessfully', function(req, res, next) {
+  res.render('shop/paysuccessfully', {
+    title: 'Payment'
+  });
+})
+
 
 module.exports = router;
