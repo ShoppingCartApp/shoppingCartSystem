@@ -15,5 +15,17 @@ router.get('/', function (req, res, next) {
   });
 });
 
+router.get('/shoppingcart', function(req, res, next) {
+  res.render('shop/shoppingcart', {
+    title: 'Shopping-cart',
+  });
+});
+
+router.get('/checkout', function(req, res, next) {
+  res.render('shop/checkout', {
+    title: 'Check Out',
+  });
+});
+
 
 module.exports = router;
