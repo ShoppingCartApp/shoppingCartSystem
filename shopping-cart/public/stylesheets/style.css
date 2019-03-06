@@ -348,6 +348,10 @@
     line-height: 25px;
 }
 
+#myFooter #socialIcon {
+    padding-top: 20px;
+}
+
 #myFooter img {
     width: 200px;
     height: 200px;
