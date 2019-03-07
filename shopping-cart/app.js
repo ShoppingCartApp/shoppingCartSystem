@@ -8,8 +8,6 @@ var session = require('express-session');
 var flash = require('connect-flash');
 
 var indexRouter = require('./routes/index');
-var productsRouter = require('./routes/product');
-
 
 var app = express();
 
@@ -24,8 +22,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// router set up
 app.use('/', indexRouter);
-app.use('/', productsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
