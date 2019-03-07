@@ -3,8 +3,12 @@
      
 }
 
-.des {
-    width: 250px;
+.productImg {
+    width: 280px;
+}
+
+.productDes {
+    width: 247px;
 }
 
 .price {
@@ -14,8 +18,8 @@
 }
 
 #carousel-img {
-    max-height: 180px;
-    width: 250px;
+    height: 180px;
+    width: 200px;
 }
 
 .jumbotron {

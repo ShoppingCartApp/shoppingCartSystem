@@ -4,30 +4,28 @@
 			<aside class="col-sm-5 border-right">
 				<article class="gallery-wrap">
 					<div class="img-big-wrap">
-						<div> <a href="#"><img src="https://upload.wikimedia.org/wikipedia/en/1/1b/Monster_Hunter_World_cover_art.jpg"></a></div>
+						<div> <a href="#"><img src="{{product.imagePath}}"></a></div>
 					</div> <!-- slider-product.// -->
 				</article> <!-- gallery-wrap .end// -->
 			</aside>
 			<aside class="col-sm-7">
 				<article class="card-body p-5">
-					<h3 class="title mb-3">Original Version of Some product name</h3>
+					<h3 class="title mb-3">{{product.name}}</h3>
 
 					<p class="price-detail-wrap">
 						<span class="price h3 text-warning">
-							<span class="currency">CAN $</span><span class="num">79.99</span>
+							<span class="currency">CAN $</span><span class="num">{{product.price}}<span>
 						</span>
 					</p> <!-- price-detail-wrap .// -->
 					<dl class="item-property">
 						<dt>Description</dt>
 						<dd>
-							<p>Monster Hunter: World[a] is an action role-playing game developed and published by Capcom. 
-                    			In the game, the player takes the role of a Hunter, 
-                    			tasked to hunt down and either kill or trap monsters that roam in one of several environmental spaces. </p>
+							<p>{{product.description}}</p>
 						</dd>
 					</dl>
 					<dl class="param param-feature">
 						<dt>Delivery</dt>
-						<dd>Russia, USA, and Europe</dd>
+						<dd>Canada, USA</dd>
 					</dl> <!-- item-property-hor .// -->
 					<hr>
 					<dl class="param param-feature">
