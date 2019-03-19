@@ -3,6 +3,7 @@ var router = express.Router();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 var db = require('../models/productModel');
+var cartdb = require('../models/cart');
 var userdb = require('../models/usersModel');
 var Cart = require('../models/cart');
 
@@ -38,6 +39,7 @@ router.get('/shoppingcart', function (req, res, next) {
   });
 });
 
+/** 
 router.get('/add-to-cart/:id', function(req, res, next) {
   let id = parseInt(req.params.id);
   var cart = new Cart(req.session.cart ? req.session.cart.items : {});
@@ -49,6 +51,24 @@ router.get('/add-to-cart/:id', function(req, res, next) {
       console.log(req.session.cart);
       res.redirect('/');
     }
+  });
+});
+*/
+router.post('/add-to-cart/:id', function(req, res, next) {
+  let id = parseInt(req.params.id);
+  const product = req.body;
+  cartdb.serialize( function() {
+    cartdb.run('INSERT INTO cart(product_id, product_name, product_price, product_image) VALUES(?,?,?,?)', 
+    [id, product.productName, product.productPrice, product.image]);
+    cartdb.get('SELECT last_insert_rowid()', [], function(err,row) {
+      if (!err) {
+        console.log( row );
+        let id = row['last_insert_rowid()'];
+        let p = {id : id};
+        res.send(p);
+        res.redirect('shop/index');
+      }
+    });
   });
 });
 

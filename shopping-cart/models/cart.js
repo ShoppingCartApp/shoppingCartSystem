@@ -1,19 +1,23 @@
-module.exports = function Cart(oldCart) {
-    this.items = oldCart.items || {};
-    this.totalQty = oldCart.totalQty || 0;
-    this.totalPrice = oldCart.totalPrice || 0;
+const sqlite3 = require('sqlite3').verbose();
 
-    this.add = function(item, id) {
-        var storedItem = this.items[id];
-        if (!storedItem) {
-            storedItem = this.items[id] = {item: item, qty: 0, price: 0};
+const db = new sqlite3.Database( __dirname + '/cart.db',
+    function(err) {
+        if ( !err ) {
+            db.serialize( function() {
+                db.run(`
+                    CREATE TABLE IF NOT EXISTS cart (
+                        user_id INTEGER,
+                        product_id INTERGER,
+                        product_name TEXT,
+                        product_image TEXT,
+                        product_price REAL,
+                        product_description TEXT,
+                        product_qty INTEGER
+                )`);
+                console.log('opened cart.db');
+            });
         }
-        storedItem.qty++;
-        storedItem.price = storedItem.item.price * storedItem.qty;
-        this.totalQty++;
-        this.totalPrice += storedItem.item.price;
-        //console.log(this.totalPrice);
-        //console.log(this.totalQty); 
-    };
+    });
 
-};
+
+module.exports = db;
