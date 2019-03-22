@@ -4,12 +4,13 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var expressHbs = require('express-handlebars');
-
+var session = require('express-session');
+var flash = require('connect-flash');
+var SqliteStore = require('connect-sqlite3')(session);
 var indexRouter = require('./routes/index');
-var productsRouter = require('./routes/product');
-
 
 var app = express();
+
 
 // view engine setup
 app.engine('.hbs', expressHbs({defaultLayout: 'layout', extname: '.hbs'}));
@@ -20,10 +21,18 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+
+
 app.use(express.static(path.join(__dirname, 'public')));
 
+// router set up
 app.use('/', indexRouter);
-app.use('/', productsRouter);
+
+app.use(function(req, res, next) {
+  res.locals.session = req.session;
+  next();
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,0 +1,57 @@
+
+
+<button id="changeP">Change Password</button>
+<button id="deleteAcc">Delete Account</button>
+
+<script>
+
+const login_popup = `
+<label> Old Password: <input type='text' name='old'></label>
+<label> New Password: <input type='text' name='new1'></label>
+<label> Re-enter New Password: <input type='text' name='new2'></label>
+<button id="sign-in">Submit</button>
+<div id='error-msg'></div>`;
+let pass = document.getElementById('changeP');
+
+loginButton.addEventListener( 'click', (evt) => {
+   
+    let popup = document.createElement('div');
+    popup.innerHTML = login_popup;
+    popup.setAttribute('class', 'login-popup' );
+    let loginSubmit = popup.querySelector('button#sign-in');
+    let errorMsg = popup.querySelector('div#error-msg');
+    let oldpass = popup.querySelector('input[name="old"]');
+    let new2 = popup.querySelector('input[name="new1"]');
+    let new2 = popup.querySelector('input[name="new2"]');
+
+loginSubmit.addEventListener( 'click', (evt) => {
+        errorMsg.textContent = '';
+        checkPass( oldpass, ( req ) => {
+            if ( req.status == 200 ) { 
+                let res = req.response;
+                if ( res.ok ) {
+                    popup.remove(); //check if old pass is correct and new passwords match
+                }
+                
+                else {
+                    errorMsg.textContent = 'Try again';
+                }
+            }
+        } );
+    });
+
+    let body = document.querySelector('body');
+    body.append( popup );
+} );
+
+    let req = new XMLHttpRequest();
+    req.open('POST', '/changePassword');
+    req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+    req.responseType = 'json';
+    console.log(JSON.stringify(obj));
+    req.send( JSON.stringify();
+
+}
+
+
+</script>

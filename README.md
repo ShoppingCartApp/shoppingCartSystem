@@ -6,9 +6,10 @@
 #### -Registration page
 #### -Ability to reset password, delete account
 #### -User profile
-#### -Posting a product
+#### -Product listing page
+#### -Single product page
 #### -Shopping cart
-#### -Search for products to add
+#### -Checkout page
 #### -Product review / rating a product
 #### -Administration page
-#### -Notification for price drop
+
