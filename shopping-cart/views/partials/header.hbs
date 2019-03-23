@@ -12,7 +12,9 @@
       </li>
     </ul>
     <span class="navbar-text">
-      <a href="/shoppingcart"><i class="fas fa-shopping-cart"></i> Shopping Cart <span class="sr-only">(current)</span></a>
+      <a href="/shoppingcart"><i class="fas fa-shopping-cart"></i> Shopping Cart
+        <span class="badge">{{session.cart.totalQty}}</span>
+      </a>
     </span>
     <span class="navbar-text dropdown">
       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
@@ -20,8 +22,8 @@
         <i class="fas fa-user-cog"></i> User Management
       </a>
       <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-        <a class="dropdown-item" href="#">Action</a>
-        <a class="dropdown-item" href="#">Another action</a>
+        <a class="dropdown-item" href="/user/login">login</a>
+        <a class="dropdown-item" href="/user/register">register</a>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="#">Something else here</a>
       </div>
