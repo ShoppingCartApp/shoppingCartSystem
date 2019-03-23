@@ -6,9 +6,10 @@ var db = require('../models/productModel');
 var cartdb = require('../models/cart');
 var userdb = require('../models/usersModel');
 var Cart = require('../models/cart');
+const sha256 = require('sha-256-js');
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
+router.get('/product', function (req, res, next) {
   db.all('SELECT * FROM products', [], function (err, rows) {
     if (!err) {
       res.type('.html'); // set content type to html
@@ -54,19 +55,19 @@ router.get('/add-to-cart/:id', function(req, res, next) {
   });
 });
 */
-router.post('/add-to-cart/:id', function(req, res, next) {
+router.post('/add-to-cart/:id',  jsonParser,function(req, res) {
   let id = parseInt(req.params.id);
   const product = req.body;
+  console.log(product);
   cartdb.serialize( function() {
-    cartdb.run('INSERT INTO cart(product_id, product_name, product_price, product_image) VALUES(?,?,?,?)', 
-    [id, product.productName, product.productPrice, product.image]);
+    cartdb.run('INSERT INTO cart(product_id, product_name, product_price, product_image, product_description, product_qty) VALUES(?,?,?,?,?,?)', 
+    [product.pid, product.productName, product.productPrice, product.image, product.description, product.qty]);
     cartdb.get('SELECT last_insert_rowid()', [], function(err,row) {
       if (!err) {
-        console.log( row );
+        console.log(row);
         let id = row['last_insert_rowid()'];
         let p = {id : id};
         res.send(p);
-        res.redirect('shop/index');
       }
     });
   });
@@ -84,7 +85,7 @@ router.get('/paysuccessfully', function (req, res, next) {
   });
 })
 
-router.get('/user/login', function(req, res, next) {
+router.get('/', function(req, res, next) {
   res.render('user/login', {
     title: "Login Page"
   });
@@ -94,7 +95,7 @@ router.get('/user/register', function(req, res, next) {
   res.render('user/register', {
     title: "Registration Page"
   });
-});
+}); 
 
 router.get('/user/login/:id(\\d+)', function(req, res) {//currently not used in front end
   let id = parseInt(req.params.id); // XXX error checking
@@ -114,33 +115,47 @@ router.get('/user/login/:id(\\d+)', function(req, res) {//currently not used in 
   } );
 });
 
-router.post('/user/login', function(req, res) {
-  var u = req.body;   
-  console.log(u); 
+router.post('/login',jsonParser, function(req, res) {
+  const u = req.body;
+  console.log(u);
+  console.log('username: '+ u.username);
+  userdb.run('SELECT * FROM users WHERE username = ?',
+      [ u.username ],
+      function(err, row) {
+          console.log("row:" +row);
+          if ( !err ) {
+              console.log('no err');
+              if( row ) {
+                  console.log('row checked');
+                  if( sha256(u.password) == row.password ) {
+                      req.session.auth = true;
+                      req.session.user = u.user;
+                      res.send( JSON.stringify({ ok: true }) );
+                  }
+                  else {
+                      req.session.auth = false;
+                      res.send( JSON.stringify({ ok: false }) );
+                  }
+              }
+              else { 
+                  req.session.auth = false;
+                  res.send( JSON.stringify({ ok: false, msg : 'nouser' }) );
+              }
+          }
+          else {
+              req.session.auth = false;
+              res.send({ ok:false });
+          }
+      } );
 
-  if( u.submit == "Login"){
-      userdb.get("select * from users where (username=?) and (password=?)",[u.username,u.password],function(err,row){
-      if(row){
-          res.redirect("/");
-      }
-      else{
-          res.send("alert('Username or Password incorrect. Please try again or register.')");
-      }
-  });
-  }
-  if(u.submit == "Register"){
-      res.render('user/register', {
-        title: "Register Page"
-      });
-  }
 });
 
-router.post('/register',jsonParser, function(req, res) {
+router.post('/user/register',jsonParser, function(req, res,next) {
   var u = req.body;
-  console.log(req.body);
-  var i = db.get('SELECT last_insert_rowid()');
-  userdb.run('INSERT INTO users(id,username,password) VALUES(?,?,?);',[i,u.username,u.password]);
-
+  console.log(u);
+  userdb.run('INSERT INTO users(username,password,FName,LName,email) VALUES(?,?,?,?,?);',[u.username,sha256(u.password),u.FName,u.LName,u.email]);
+  console.log('inserted');
+   
 });
 
 

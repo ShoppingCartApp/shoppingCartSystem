@@ -4,29 +4,29 @@
 			<aside class="col-sm-5 border-right">
 				<article class="gallery-wrap">
 					<div class="img-big-wrap">
-						<div> <a href="#"><img src="{{product.imagePath}}"></a></div>
-					</div> <!-- slider-product.// -->
-				</article> <!-- gallery-wrap .end// -->
+						<div> <a href="#"><img id="img" src="{{product.imagePath}}"></a></div>
+					</div> 
+				</article> 
 			</aside>
 			<aside class="col-sm-7">
 				<article class="card-body p-5">
-					<h3 class="title mb-3">{{product.name}}</h3>
+					<h3 id="pname" class="title mb-3">{{product.name}}</h3>
 
 					<p class="price-detail-wrap">
 						<span class="price h3 text-warning">
-							<span class="currency">CAN $</span><span class="num">{{product.price}}<span>
+							<span class="currency">CAN $</span><span id="productPrice" class="num">{{product.price}}
 						</span>
-					</p> <!-- price-detail-wrap .// -->
+					</p> 
 					<dl class="item-property">
 						<dt>Description</dt>
 						<dd>
-							<p>{{product.description}}</p>
+							<p id="description">{{product.description}}</p>
 						</dd>
 					</dl>
 					<dl class="param param-feature">
 						<dt>Delivery</dt>
 						<dd>Canada, USA</dd>
-					</dl> <!-- item-property-hor .// -->
+					</dl> 
 					<hr>
 					<dl class="param param-feature">
 						<dt>Rating</dt>
@@ -44,27 +44,60 @@
 							<dl class="param param-inline">
 								<dt>Quantity: </dt>
 								<dd>
-									<select class="form-control form-control-sm" style="width:70px;">
-										<option> 1 </option>
-										<option> 2 </option>
-										<option> 3 </option>
+									<select id="qty" class="form-control form-control-sm" style="width:70px;">
+										<option value="1"> 1 </option>
+										<option value="2"> 2 </option>
+										<option value="3"> 3 </option>
+										<option value="4"> 4 </option>
+										<option value="5"> 5 </option>
+										<option value="6"> 6 </option>
+										<option value="7"> 7 </option>
 									</select>
 								</dd>
-							</dl> <!-- item-property .// -->
-						</div> <!-- col.// -->
+							</dl> 
+						</div> 
 						<div class="col-sm-7">
-						</div> <!-- col.// -->
-					</div> <!-- row.// -->
+						</div> 
+					</div> 
 					<hr>
-					<a href="#" class="btn btn-lg btn-primary text-uppercase"> <i class="fas fa-shopping-cart"></i> Add to
+					<a href="/product/{{product.id}}" id="addButton" class="btn btn-lg btn-primary text-uppercase"> <i class="fas fa-shopping-cart"></i> Add to
 						cart </a>
-				</article> <!-- card-body.// -->
-			</aside> <!-- col.// -->
-		</div> <!-- row.// -->
-	</div> <!-- card.// -->
-
-
+				</article> 
+			</aside> 
+		</div> 
+	</div> 
 </div>
-<!--container.//-->
+<script>
+    const addButton = document.getElementById('addButton');
+    const imagePath = document.getElementById('img').src;
+    const pname = document.getElementById('pname').textContent;
+	const pdescription = document.getElementById('description').innerText;
+	let purl = document.getElementById('addButton').href;
+	let pid = (purl.match(/(\d+)/g) || []);
+    let price = parseFloat(document.getElementById('productPrice').innerText);
+	let sel = document.getElementById('qty');
+	let qty = parseInt(sel.options[sel.selectedIndex].value);
+
+    let obj = {pid: pid[1], image: imagePath, productName: pname, productPrice: price, description: pdescription, qty: qty};
+	console.log(obj);
+    addButton.addEventListener('click', (evt) => {
+        let req = new XMLHttpRequest();
+        req.open('POST', `/add-to-cart/:id`);
+        req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+        req.responseType = 'json';
+        req.onload = function (evt) {
+            if (req.status == 200) { // check for ok response
+                const resp = req.response;
+                console.log(resp);
+				window.alert("Item has been added to the cart");
+            }
+            else {
+                console.log('err', req);
+            }
+        };
+        console.log('sending', obj);
+        req.send(JSON.stringify(obj));
+    });
+</script>
 
 
