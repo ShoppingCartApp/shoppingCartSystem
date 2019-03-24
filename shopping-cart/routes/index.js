@@ -9,9 +9,10 @@ var Cart = require('../models/cart');
 const sha256 = require('sha-256-js');
 
 /* GET home page. */
-router.get('/product', function (req, res, next) {
+router.get('/product/:user', function (req, res, next) {
+  let u = req.params.user;
   db.all('SELECT * FROM products', [], function (err, rows) {
-    if (!err) {
+    if(!err) {
       res.type('.html'); // set content type to html
       res.render('shop/index', {
         title: 'Home Page',
@@ -35,26 +36,18 @@ router.get('/product/:id', function (req, res, next) {
 });
 
 router.get('/shoppingcart', function (req, res, next) {
-  res.render('shop/shoppingcart', {
-    title: 'Shopping-cart',
-  });
-});
-
-/** 
-router.get('/add-to-cart/:id', function(req, res, next) {
-  let id = parseInt(req.params.id);
-  var cart = new Cart(req.session.cart ? req.session.cart.items : {});
-
-  db.get('SELECT * FROM products WHERE id=?', [id], function (err, row) {
+  cartdb.all('SELECT * FROM cart', function (err, rows) {
     if (!err) {
-      cart.add(row, row.id);
-      req.session.cart = cart;
-      console.log(req.session.cart);
-      res.redirect('/');
+      res.type('.html'); // set content type to html
+      res.render('shop/shoppingcart', {
+        title: 'Shopping-cart',
+        products: rows
+      });
+      console.log(rows);
     }
   });
 });
-*/
+
 router.post('/add-to-cart/:id',  jsonParser,function(req, res) {
   let id = parseInt(req.params.id);
   const product = req.body;
@@ -74,16 +67,26 @@ router.post('/add-to-cart/:id',  jsonParser,function(req, res) {
 });
 
 router.get('/checkout', function (req, res, next) {
-  res.render('shop/checkout', {
-    title: 'Check Out',
+  cartdb.all('SELECT * FROM cart', function(err, rows) {
+    if(!err) {
+      res.render('shop/checkout', {
+        title: 'Check Out',
+        items: rows
+      });
+    }
   });
 });
 
-router.get('/paysuccessfully', function (req, res, next) {
-  res.render('shop/paysuccessfully', {
-    title: 'Thank you'
+router.get('/thankyou', function (req, res, next) {
+  cartdb.all('SELECT * FROM cart', function(err, rows) {
+    if(!err) {
+      res.render('shop/thankyou', {
+        title: 'Thank you',
+        items: rows
+      });
+    }
   });
-})
+});
 
 router.get('/', function(req, res, next) {
   res.render('user/login', {
@@ -99,7 +102,7 @@ router.get('/user/register', function(req, res, next) {
 
 router.get('/user/login/:id(\\d+)', function(req, res) {//currently not used in front end
   let id = parseInt(req.params.id); // XXX error checking
-  userdb.get('SELECT * FROM users WHERE id=?',[id], function(err, row) {
+  db.get('SELECT * FROM users WHERE id=?',[id], function(err, row) {
       if (!err) {
           console.log( 'get', user );
           if ( row ) {
@@ -114,12 +117,22 @@ router.get('/user/login/:id(\\d+)', function(req, res) {//currently not used in 
       }
   } );
 });
+router.get('/user/profile', function(req,res,next){
+  res.render('user/profile', {
+    title: "Profile"
+  });
+}); 
+router.get('/user/settings', function(req,res,next){
+  res.render('user/settings', {
+    title: "settings"
+  });
+}); 
 
 router.post('/login',jsonParser, function(req, res) {
   const u = req.body;
   console.log(u);
-  console.log('username: '+ u.username);
-  userdb.run('SELECT * FROM users WHERE username = ?',
+
+  userdb.get('SELECT * FROM users WHERE username = ?',
       [ u.username ],
       function(err, row) {
           console.log("row:" +row);
@@ -128,22 +141,21 @@ router.post('/login',jsonParser, function(req, res) {
               if( row ) {
                   console.log('row checked');
                   if( sha256(u.password) == row.password ) {
-                      req.session.auth = true;
-                      req.session.user = u.user;
-                      res.send( JSON.stringify({ ok: true }) );
+
+                      res.send( JSON.stringify({ ok: true, user: u.username }) );
                   }
                   else {
-                      req.session.auth = false;
+
                       res.send( JSON.stringify({ ok: false }) );
                   }
               }
               else { 
-                  req.session.auth = false;
+
                   res.send( JSON.stringify({ ok: false, msg : 'nouser' }) );
               }
           }
           else {
-              req.session.auth = false;
+
               res.send({ ok:false });
           }
       } );
