@@ -21,11 +21,9 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-
-
-
+app.use(session({secret: "its a secret!", resave:true, saveUninitialized:true}));
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.locals.user = undefined;
 // router set up
 app.use('/', indexRouter);
 
@@ -49,5 +47,4 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
 module.exports = app;

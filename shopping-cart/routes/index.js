@@ -8,6 +8,8 @@ var userdb = require('../models/usersModel');
 var Cart = require('../models/cart');
 const sha256 = require('sha-256-js');
 
+var currentUser = '';
+
 /* GET home page. */
 router.get('/product', function (req, res, next) {
   db.all('SELECT * FROM products', [], function (err, rows) {
@@ -119,12 +121,15 @@ router.get('/user/profile', function(req,res,next){
     title: "Profile"
   });
 }); 
+
+
 router.get('/user/settings', function(req,res,next){
   res.render('user/settings', {
     title: "settings"
   });
 }); 
 
+// User login function
 router.post('/login',jsonParser, function(req, res) {
   const u = req.body;
   console.log(u);
@@ -138,27 +143,24 @@ router.post('/login',jsonParser, function(req, res) {
               if( row ) {
                   console.log('row checked');
                   if( sha256(u.password) == row.password ) {
-
+                      currentUser = u.username;
                       res.send( JSON.stringify({ ok: true }) );
                   }
                   else {
-
                       res.send( JSON.stringify({ ok: false }) );
                   }
               }
               else { 
-
                   res.send( JSON.stringify({ ok: false, msg : 'nouser' }) );
               }
           }
           else {
-
               res.send({ ok:false });
           }
       } );
-
 });
 
+//User Register function
 router.post('/user/register',jsonParser, function(req, res,next) {
   var u = req.body;
   console.log(u);
@@ -166,8 +168,54 @@ router.post('/user/register',jsonParser, function(req, res,next) {
   console.log('inserted');
    
 });
+//User change password function, under settings.
+router.post('/changePassword',jsonParser, function(req, res,next){
+  var u = req.body;
+  console.log(u);
+  userdb.get('SELECT * FROM users WHERE username = ?',[ currentUser ],function(err,row){
+    console.log('row: '+row);
+    if(!err){
+      console.log('row pass: '+row.password+", old pass: "+u.oldPassword);
+      if(row.password == sha256(u.oldPassword)){
+        userdb.get('UPDATE users SET password=? WHERE username = ?',[sha256(u.newPassword),currentUser ],function(err,row){
+          if(err){
+            res.send(JSON.stringify({ok:false,err:' update row error'}));        
+          }
+          res.send(JSON.stringify({ok:true}));
+        });
+    }
+      else{
+        res.send(JSON.stringify({ok:false}));
+      }
+  }
+  else{
+    res.send(JSON.stringify({ok:false, err:'error'}));
+  }
+});
+});
+router.post('/DeleteAccount',jsonParser, function(req, res,next){
+  var u = req.body;
+  console.log(u);
+  userdb.get('SELECT * FROM users WHERE username = ?',[ currentUser ],function(err,row){
+    console.log('row: '+row);
+    if(!err){
+      console.log('row pass: '+row.password+", old pass: "+u.password);
+      if(row.password == sha256(u.password)){
+        userdb.get('DELETE FROM users WHERE username = ?',[currentUser ],function(err,row){
+          if(err){
+            res.send(JSON.stringify({ok:false,err:' delete row error'}));        
+          }
+          res.send(JSON.stringify({ok:true}));
+        });
+    }
+      else{
+        res.send(JSON.stringify({ok:false}));
+      }
+  }
+  else{
+    res.send(JSON.stringify({ok:false, err:'error'}));
+  }
+}); 
 
-
-
-
+});
 module.exports = router;
