@@ -193,6 +193,32 @@ router.post('/changePassword',jsonParser, function(req, res,next){
   }
 });
 });
+router.post('/changeUsername', jsonParser, function(req,res,next){
+  var u = req.body;
+  console.log(u);
+  userdb.get('SELECT * FROM users WHERE username = ?',[ currentUser ],function(err,row){
+    console.log('row: '+row);
+    if(row){
+      console.log('row pass: '+row.password+", old pass: "+u.password);
+      if(row.password == sha256(u.password)){
+        userdb.get('DELETE FROM users WHERE username = ?',[currentUser ],function(err,row){
+          if(err){
+            res.send(JSON.stringify({ok:false,err:' delete row error'}));        
+          }
+          res.send(JSON.stringify({ok:true}));
+        });
+    }
+      else{
+        res.send(JSON.stringify({ok:false}));
+      }
+  }
+  else{
+    res.send(JSON.stringify({ok:false, err:'error'}));
+  }
+}); 
+
+});
+
 router.post('/DeleteAccount',jsonParser, function(req, res,next){
   var u = req.body;
   console.log(u);
@@ -216,6 +242,6 @@ router.post('/DeleteAccount',jsonParser, function(req, res,next){
     res.send(JSON.stringify({ok:false, err:'error'}));
   }
 }); 
-
 });
+
 module.exports = router;
