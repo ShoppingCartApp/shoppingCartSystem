@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var expressHbs = require('express-handlebars');
+const cookieSession = require('cookie-session');
 var session = require('express-session');
 var flash = require('connect-flash');
 var SqliteStore = require('connect-sqlite3')(session);
@@ -21,6 +22,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+/** 
 app.use(session({
   store: new SqliteStore,
   secret: 'my secret',
@@ -28,15 +30,16 @@ app.use(session({
   saveUninitialized: false,
   cookie: {maxAge: 7*24*60*60*1000} // 1 week
 }));
+*/
+app.use(cookieSession({
+  name: 'session',
+  //keys: ['key1', 'key2'],
+  secret: 'foo'
+}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // router set up
 app.use('/', indexRouter);
-
-app.use(function(req, res, next) {
-  res.locals.session = req.session;
-  next();
-});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

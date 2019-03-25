@@ -36,7 +36,7 @@
       console.log(req.response);
       var res = req.response;
       if(res.ok){
-        window.location.href="/product/"+res.user;
+        window.location.href="/products";
       }
       else if(res.ok == false){
         window.alert("Username or Password Incorrect. Try again.");

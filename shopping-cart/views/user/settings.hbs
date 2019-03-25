@@ -1,0 +1,112 @@
+<div id="settings">
+<div id="settings1">
+<button type="button" class="btn btn-info" id="passB" data-toggle="collapse" data-target="#demo">Change Password</button>
+<div id="demo" class="collapse">
+<label> Old Password: <input type='password' id='old'></label><br>
+<label> New Password: <input type='password' id='new1'></label><br>
+<label> Re-enter New Password: <input type='password' id='new2'></label><br>
+<button id="sign-in">Submit</button><br>
+<div id='error-msg'></div>    
+</div>
+</div>
+<div id="settings2">
+<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo2">Delete Account</button>
+<div id="demo2" class="collapse">
+<label>Password: <input type='password' id='passD'></label><br>
+Are you sure you want to delete your account? <b>This cannot be undone.</b><br>
+<button id="delete-acc">Permanently Delete Account</button>
+<div id="error-msg2"></div>
+</div>
+</div>
+</div>
+
+
+<script>
+//------------------Change Password
+let pass = document.getElementById('sign-in');
+pass.addEventListener( 'click', (evt) => {
+let oldPassword = document.getElementById('old').value;
+let new1 = document.getElementById('new1').value;
+let new2 = document.getElementById('new2').value;
+let errorMsg = document.getElementById('error-msg');
+//Error checking
+if(new1 != new2){
+    errorMsg.textContent = "New Password does not match. Try Again.";
+}
+else if(new1 ==''){
+errorMsg.textContent = "Must enter a new password. Try Again." ;   
+}
+else if(oldPassword==''){
+    errorMsg.textContent = "Please enter your old password. Try Again.";
+}
+else if(oldPassword==new1){
+    errorMsg.textContent = "The new password must be different than the current password. Try Again.";
+}
+//Send request, change password if old password is correct.
+else{
+    let req = new XMLHttpRequest(); 
+    req.open('POST', '/changePassword');
+    req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+    req.responseType = 'json';
+    let obj = {oldPassword:oldPassword, newPassword:new1};
+    req.onload = function(evt) { 
+        let res = req.response;
+        if(res.ok){
+            document.getElementById('old').value = "";
+            document.getElementById('new1').value = "";
+            document.getElementById('new2').value = "";
+            window.alert('Password successfully changed.');
+            document.getElementById('passB').setAttribute("class","btn btn-info");
+            document.getElementById('passB').setAttribute("aria-expanded","false");
+            document.getElementById('demo').setAttribute("class","collapse");
+        }
+        else{
+            errorMsg.textContent = "Password Incorrect. Try again.";
+        }
+    }
+    console.log(JSON.stringify(obj));
+    req.send( JSON.stringify(obj));
+}
+});
+//--------------Delete Account
+var del = document.getElementById('delete-acc');
+errorMsg2 = document.getElementById('error-msg2');
+del.addEventListener('click',(evt) =>{
+    passD = document.getElementById('passD').value;
+    if(passD ==''){
+        errorMsg2.textContent = "Please Enter your password.";
+    }
+    else{
+        let req = new XMLHttpRequest(); 
+        req.open('POST', '/DeleteAccount');
+        req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+        req.responseType = 'json';
+        let obj = {password:passD};
+        req.onload = function(evt) { 
+            let res = req.response;
+            if(res.ok){   
+                window.location.href = "/";
+            }
+            else{
+                errorMsg2.textContent = "Wrong Password. Try again.";
+            }
+        }
+        console.log(JSON.stringify(obj));
+        req.send( JSON.stringify(obj));
+    }
+});
+</script>
+
+<style>
+    button{
+        margin:20px;
+    }
+    #settings1{
+        display: inline-block;
+        margin-left:10px;
+    }
+    #settings2{
+        display: inline-block;
+        margin-left:250px;
+    }
+</style>

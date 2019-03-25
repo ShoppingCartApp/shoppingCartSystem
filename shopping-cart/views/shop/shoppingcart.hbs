@@ -1,3 +1,35 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#"><img class="headerLogo" src="/logo.png"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/products">Home <span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+    <span class="navbar-text">
+      <a href="/shoppingcart"><i class="fas fa-shopping-cart"></i> Shopping Cart
+        <span class="badge">{{session.cart.totalQty}}</span>
+      </a>
+    </span>
+    <span class="navbar-text dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-user-cog"></i> User Management
+      </a>
+      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <a class="dropdown-item" href="/user/login">login</a>
+        <a class="dropdown-item" href="/user/register">register</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="#">Something else here</a>
+      </div>
+    </span>
+  </div>
+</nav>
 
 <script src="https://use.fontawesome.com/c560c025cf.js"></script>
 <div class="container">
@@ -15,7 +47,7 @@
                                 <img class="img-responsive" src="{{this.product_image}}" alt="prewiew" width="120" height="80">
                         </div>
                         <div class="col-12 text-sm-center col-sm-12 text-md-left col-md-6">
-                            <h4 class="product-name"><strong>{{this.product_name}}</strong></h4>
+                            <h4 id="product_name" class="product-name"><strong>{{this.product_name}}</strong></h4>
                         </div>
                         <div class="col-12 col-sm-12 text-sm-center col-md-4 text-md-right row">
                             <div class="col-3 col-sm-3 col-md-6 text-md-right" style="padding-top: 5px">
@@ -28,7 +60,7 @@
                                 </div>
                             </div>
                             <div class="col-2 col-sm-2 col-md-2 text-right">
-                                <button type="button" class="btn btn-outline-danger btn-xs">
+                                <button id="singleDelete" type="button" class="btn btn-outline-danger btn-xs">
                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                 </button>
                             </div>
@@ -55,7 +87,74 @@
         </div>
 </div>
 <script>
-    const checkoutButton = document.getElementById('checkout');
-    
+    const deleteButton = document.getElementById("singleDelete");
+    let pname = document.getElementById("product_name").textContent;
+
+    deleteButton.addEventListener('click', (evt) => {
+        console.log("clicked delete button");
+        let req = new XMLHttpRequest();
+        req.open('DELETE', '/deleteSingleProduct');
+        req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+        req.responseType = 'json';
+        req.onload = function (evt) {
+            if (req.status == 200) { // check for ok response
+                const resp = req.response;
+                console.log(resp.status);
+            }
+            else {
+                console.log('err', req);
+            }
+        };
+        req.send(pname);
+    });
 
 </script>
+
+<footer id="myFooter">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <img src="logo.png">
+            </div>
+            <div class="col-sm-2">
+                <h5>Get started</h5>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Sign up</a></li>
+                    <li><a href="#">Log in</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-2">
+                <h5>About us</h5>
+                <ul>
+                    <li><a href="#">Company Information</a></li>
+                    <li><a href="#">Contact us</a></li>
+                    <li><a href="#">Reviews</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-2">
+                <h5>Support</h5>
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Help desk</a></li>
+                    <li><a href="#">Forums</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-3" id="socialIcon">
+                <div class="text-center">
+                    <a class="btn btn-social-icon btn-google" href="http://google.com/+"><i
+                            class="fab fa-google-plus-square fa-2x"></i></a>
+                    <a class="btn btn-social-icon btn-facebook" href="http://www.facebook.com/profile.php?id="><i
+                            class="fab fa-facebook-square fa-2x"></i></i></a>
+                    <a class="btn btn-social-icon btn-twitter" href="http://twitter.com/"><i
+                            class="fab fa-twitter-square fa-2x"></i></a>
+                    <a class="btn btn-social-icon" href="mailto:"><i class="fas fa-envelope-square fa-2x"></i></a>
+                </div>
+                <button type="button" class="btn btn-default">Contact us</button>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright">
+        <p>© 2019 Copyright Shopping Cart System </p>
+    </div>
+</footer>
