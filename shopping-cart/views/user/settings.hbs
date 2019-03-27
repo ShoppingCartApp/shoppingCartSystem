@@ -1,38 +1,38 @@
-
 <div id="settings">
-
+<h1 id="settings-title"><u>Account Settings</u></h1>
+<div id="settings-b">
 <button type="button" class="btn btn-info" data-toggle="collapse" id="userB" data-target="#demo">Change Username</button>
 <div id="demo" class="collapse">
-<label>New Username: <input type='text' id='usern'></label><br>
-<button id="change-user">Change Username</button>
+<label>New Username:</label> <input type='text' id='usern'><br>
+<button class="set-submit" id="change-user">Change Username</button>
 <div id="error-msg2"></div>
 </div>
-
+<br>
 <button type="button" class="btn btn-info" id="passB" data-toggle="collapse" data-target="#demo1">Change Password</button>
 <div id="demo1" class="collapse">
-<label> Old Password: <input type='password' id='old'></label><br>
-<label> New Password: <input type='password' id='new1'></label><br>
-<label> Re-enter New Password: <input type='password' id='new2'></label><br>
-<button id="sign-in">Change Password</button><br>
+<label> Old Password:</label> <input type='password' id='old'><br>
+<label> New Password:</label> <input type='password' id='new1'><br>
+<label> Re-enter New Password:</label> <input type='password' id='new2'><br>
+<button class="set-submit" id="sign-in">Change Password</button><br>
 <div id='error-msg'></div>    
 </div>
 <br>
-<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo3">Change Name</button>
+<button type="button" class="btn btn-info"  id="nameB" data-toggle="collapse" data-target="#demo3">Change Name</button>
 <div id="demo3" class="collapse">
-<label>First Name <input type='text' id='fname'></label><br>
-<label>Last Name <input type='text' id='lname'></label><br>
-<button id="change-name">Change name</button>
+<label>First Name:</label> <input type='text' id='fname'><br>
+<label>Last Name:</label> <input type='text' id='lname'><br>
+<button class="set-submit" id="change-name">Change name</button>
 <div id="error-msg3"></div>
 </div>
-
-<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo4">Change Email</button>
+<br>
+<button type="button" class="btn btn-info" id="emailB" data-toggle="collapse" data-target="#demo4">Change Email</button>
 <div id="demo4" class="collapse">
-<label>Enter the new email address: <input type='text' id='email'></label><br>
-<button id="Change-email">Change Email</button>
+<label>New email address:</label> <input type='text' id='email'><br>
+<button class="set-submit" id="Change-email">Change Email</button>
 <div id="error-msg4"></div>
 </div>
 </div>
-
+</div>
 <script>
 
 //------------------Change Username
@@ -67,14 +67,6 @@ usern.addEventListener('click', (evt) => {
             req.send( JSON.stringify(obj));
     }
 });
-
-
-
-
-
-
-
-
 
 //------------------Change Password
 let pass = document.getElementById('sign-in');
@@ -112,7 +104,7 @@ pass.addEventListener( 'click', (evt) => {
                 window.alert('Password successfully changed.');
                 document.getElementById('passB').setAttribute("class","btn btn-info");
                 document.getElementById('passB').setAttribute("aria-expanded","false");
-                document.getElementById('demo').setAttribute("class","collapse");
+                document.getElementById('demo2').setAttribute("class","collapse");
             }
             else{
                 errorMsg.textContent = "Password Incorrect. Try again.";
@@ -124,23 +116,70 @@ pass.addEventListener( 'click', (evt) => {
 });
 
 
+//---------------------------Change name
+let cname = document.getElementById('change-name');
+cname.addEventListener('click', (evt) => {
+    let fname = document.getElementById('fname').value;
+    let lname = document.getElementById('lname').value;
+    if( fname == '' || lname == ''){
+        errorMsg.textContent = "Please enter your first name and last name.";
+    }
+    else{
+        let req = new XMLHttpRequest(); 
+            req.open('POST', '/changeName');
+            req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+            req.responseType = 'json';
+            let obj = {Fname:fname,Lname:lname};
+            req.onload = function(evt) { 
+                let res = req.response;
+                if(res.ok){
+                    document.getElementById('fname').value = "";
+                    document.getElementById('lname').value = "";
+                    window.alert('Name changed successfully.');
+                    document.getElementById('nameB').setAttribute("class","btn btn-info");
+                    document.getElementById('nameB').setAttribute("aria-expanded","false");
+                    document.getElementById('demo3').setAttribute("class","collapse");
+                }
+                else{
+                    errorMsg.textContent = "Error. Try again later.";
+                }
+            }
+            console.log(JSON.stringify(obj));
+            req.send( JSON.stringify(obj));
+    }
+});
+let cemail = document.getElementById('Change-email');
+cemail.addEventListener('click', (evt) => {
+    let email = document.getElementById('email').value;
+    if( email == ''){
+        errorMsg.textContent = "Please enter your new email.";
+    }
+    else{
+        let req = new XMLHttpRequest(); 
+            req.open('POST', '/changeEmail');
+            req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+            req.responseType = 'json';
+            let obj = {email:email};
+            req.onload = function(evt) { 
+                let res = req.response;
+                if(res.ok){
+                    document.getElementById('email').value = "";
+                    window.alert('email changed successfully.');
+                    document.getElementById('emailB').setAttribute("class","btn btn-info");
+                    document.getElementById('emailB').setAttribute("aria-expanded","false");
+                    document.getElementById('demo4').setAttribute("class","collapse");
+                }
+                else{
+                    errorMsg.textContent = "Error. Try again later.";
+                }
+            }
+            console.log(JSON.stringify(obj));
+            req.send( JSON.stringify(obj));
+    }
+});
+
+
 
 
 
 </script>
-
-<style>
-
-    #settings{
-        display: inline-table;
-        text-align:center;
-        margin-left: 20px;
-    }
-    button{
-        margin-top: 10px;
-    }
-    .collapse{
-        margin-top:10px;
-    }
-
-</style>

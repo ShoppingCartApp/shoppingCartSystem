@@ -373,3 +373,44 @@
    flex: 0 0 auto;
    -webkit-flex: 0 0 auto;
 }
+
+#settings{
+    position:relative;
+    text-align:center;
+    align-content: center;
+}
+#settings-b{
+    margin-top: 50px;
+    margin-left: 20px;
+    align-content: center;
+}
+#settings-title{
+    margin-top:10px;
+    font-size: 48px;
+    
+}
+button.btn.btn-info{
+    margin-top: 10px;
+    width:200px;
+    
+}
+.collapsing{
+    margin-top:15px;
+}
+.collapse{
+    margin-top:15px;
+    width:100%;
+}
+#settings-b label{
+    display: inline-block;
+    width: 150px;
+    text-align: right;
+}
+.set-submit{
+    width: 150px;
+    margin-top: 10px;
+    
+}
+#emailB{
+    margin-bottom: 20px;
+}

@@ -168,7 +168,7 @@ router.post('/user/register',jsonParser, function(req, res,next) {
   console.log('inserted');
    
 });
-//User change password function, under settings.
+//User change password function, ---called by settings.
 router.post('/changePassword',jsonParser, function(req, res,next){
   var u = req.body;
   console.log(u);
@@ -191,34 +191,45 @@ router.post('/changePassword',jsonParser, function(req, res,next){
   else{
     res.send(JSON.stringify({ok:false, err:'error'}));
   }
+  });
 });
-});
+//User change username function ---Called by settings.
 router.post('/changeUsername', jsonParser, function(req,res,next){
   var u = req.body;
   console.log(u);
-  userdb.get('SELECT * FROM users WHERE username = ?',[ currentUser ],function(err,row){
-    console.log('row: '+row);
-    if(row){
-      console.log('row pass: '+row.password+", old pass: "+u.password);
-      if(row.password == sha256(u.password)){
-        userdb.get('DELETE FROM users WHERE username = ?',[currentUser ],function(err,row){
-          if(err){
-            res.send(JSON.stringify({ok:false,err:' delete row error'}));        
-          }
-          res.send(JSON.stringify({ok:true}));
-        });
+  userdb.get('UPDATE users SET username=? WHERE username = ?',[u.username, currentUser ],function(err,row){
+    if(err){
+      res.send(JSON.stringify({ok:false,err:' change user row error'}));        
     }
-      else{
-        res.send(JSON.stringify({ok:false}));
-      }
-  }
-  else{
-    res.send(JSON.stringify({ok:false, err:'error'}));
-  }
-}); 
-
+    res.send(JSON.stringify({ok:true}));
+  });
 });
 
+//User change name function ---Called by settings.
+router.post('/changeName', jsonParser, function(req,res,next){
+  var u = req.body;
+  console.log(u);
+    userdb.get('UPDATE users SET Fname=?, Lname=? WHERE username = ?',[u.Fname,u.Lname,currentUser],function(err,row){
+      if(err){
+        res.send(JSON.stringify({ok:false,err:' change name error'}));        
+      }
+      res.send(JSON.stringify({ok:true}));
+    });
+});
+//User change email function ---Called by settings.
+router.post('/changeEmail', jsonParser, function(req,res,next){
+  var u = req.body;
+  console.log(u);
+    userdb.get('UPDATE users SET email=? WHERE username = ?',[u.email,currentUser],function(err,row){
+      if(err){
+        res.send(JSON.stringify({ok:false,err:' change email error'}));        
+      }
+      res.send(JSON.stringify({ok:true}));
+    });
+});
+
+
+//Admin delete account functin ----Called by admin page.
 router.post('/DeleteAccount',jsonParser, function(req, res,next){
   var u = req.body;
   console.log(u);
