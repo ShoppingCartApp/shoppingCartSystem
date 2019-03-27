@@ -12,6 +12,7 @@ const db = new sqlite3.Database( __dirname + '/products.db',
                     imagePath TEXT,
                     description TEXT,
                     rating INTEGER,
+                    rating_num INTEGER,
                     price FLOAT
                 )`);
                 console.log('opened products.db');
