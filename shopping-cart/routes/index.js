@@ -199,12 +199,21 @@ router.post('/changePassword',jsonParser, function(req, res,next){
 router.post('/changeUsername', jsonParser, function(req,res,next){
   var u = req.body;
   console.log(u);
-  userdb.get('UPDATE users SET username=? WHERE username = ?',[u.username, currentUser ],function(err,row){
+  userdb.get('SELECT * FROM users WHERE username = ?',[ u.username ],function(err,row){
+    if(row){
+      res.send(JSON.stringify({ok:false,err:'username taken error'})); 
+    }
+    else{
+    userdb.get('UPDATE users SET username=? WHERE username = ?',[u.username, currentUser ],function(err,row){
     if(err){
       res.send(JSON.stringify({ok:false,err:' change user row error'}));        
     }
+    console.log(u.username);
+    currentUser = u.username;
     res.send(JSON.stringify({ok:true}));
   });
+}
+});
 });
 
 //User change name function ---Called by settings.
