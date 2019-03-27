@@ -1,0 +1,37 @@
+
+
+
+
+//admin page
+
+
+<script>
+
+var del = document.getElementById('delete-acc');
+errorMsg2 = document.getElementById('error-msg2');
+del.addEventListener('click',(evt) =>{
+    passD = document.getElementById('passD').value;
+    if(passD ==''){
+        errorMsg2.textContent = "Please Enter your password.";
+    }
+    else{
+        let req = new XMLHttpRequest(); 
+        req.open('POST', '/DeleteAccount');
+        req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+        req.responseType = 'json';
+        let obj = {password:passD};
+        req.onload = function(evt) { 
+            let res = req.response;
+            if(res.ok){   
+                // ok 
+            }
+            else{
+                errorMsg2.textContent = "Wrong Password. Try again.";
+            }
+        }
+        console.log(JSON.stringify(obj));
+        req.send( JSON.stringify(obj));
+    }
+});
+
+</script>

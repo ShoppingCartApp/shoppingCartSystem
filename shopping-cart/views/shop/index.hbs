@@ -77,20 +77,21 @@
         {{#each products}}
         <div class="col-sm-6 col-md-4">
             <div class="thumbnail">
-                <img src="{{this.imagePath}}" class="img-responsive" alt="monster hunter" height="280" width="220">
+                <img src="{{this.imagePath}}" id="img" class="img-responsive" alt="monster hunter" height="280" width="220">
                 <div class="caption">
                     <a class="nav-link" href="/product/{{this.id}}">
-                        <h4>{{this.name}}</h4>
+                        <h4 id="pname">{{this.name}}</h4>
                     </a>
                     <div class="clearfix">
-                        <div class="price">${{this.price}}</div>
+                        <div id="productPrice" class="price">${{this.price}}</div>
                         <p>
                             <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-                            <a href="/product/{{this.id}}" class="btn btn-primary" role="button">Details</a>
+                            <a href="/add-to-cart/{{this.id}}" id="addButton" class="btn btn-primary" role="button">Add
+                                to cart</a>
                         </p>
                     </div>
                 </div>
@@ -99,3 +100,29 @@
         {{/each}}
     </div>
 </div>
+<script>
+    const addButton = document.getElementById('addButton');
+    const imagePath = document.getElementById('img');
+    const pname = document.getElementById('pname');
+    const price = document.getElementById('productPrice');
+
+    let obj = {image: imagePath, productName: pname, productPrice: price};
+
+    addButton.addEventListener('click', (evt) => {
+        let req = new XMLHttpRequest();
+        req.open('POST', '/add-to-cart/:id');
+        req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+        req.responseType = 'json';
+        req.onload = function (evt) {
+            if (req.status == 200) { // check for ok response
+                const resp = req.response;
+                console.log(resp);
+            }
+            else {
+                console.log('err', req);
+            }
+        };
+        console.log('sending', obj);
+        req.send(JSON.stringify(obj));
+    });
+</script>

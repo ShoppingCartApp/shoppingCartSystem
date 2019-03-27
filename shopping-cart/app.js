@@ -7,10 +7,10 @@ var expressHbs = require('express-handlebars');
 var session = require('express-session');
 var flash = require('connect-flash');
 var SqliteStore = require('connect-sqlite3')(session);
-
 var indexRouter = require('./routes/index');
 
 var app = express();
+
 
 // view engine setup
 app.engine('.hbs', expressHbs({defaultLayout: 'layout', extname: '.hbs'}));
@@ -21,15 +21,9 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(session({
-  store: new SqliteStore,
-  secret: 'my secret',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {maxAge: 7*24*60*60*1000} // 1 week
-}));
+app.use(session({secret: "its a secret!", resave:true, saveUninitialized:true}));
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.locals.user = undefined;
 // router set up
 app.use('/', indexRouter);
 
@@ -53,5 +47,4 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
 module.exports = app;

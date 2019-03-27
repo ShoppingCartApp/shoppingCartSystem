@@ -4,29 +4,29 @@
 			<aside class="col-sm-5 border-right">
 				<article class="gallery-wrap">
 					<div class="img-big-wrap">
-						<div> <a href="#"><img id="img" src="{{product.imagePath}}"></a></div>
-					</div> 
-				</article> 
+						<div> <a href="#"><img src="{{product.imagePath}}"></a></div>
+					</div> <!-- slider-product.// -->
+				</article> <!-- gallery-wrap .end// -->
 			</aside>
 			<aside class="col-sm-7">
 				<article class="card-body p-5">
-					<h3 id="pname" class="title mb-3">{{product.name}}</h3>
+					<h3 class="title mb-3">{{product.name}}</h3>
 
 					<p class="price-detail-wrap">
 						<span class="price h3 text-warning">
-							<span class="currency">CAN $</span><span id="productPrice" class="num">{{product.price}}
+							<span class="currency">CAN $</span><span class="num">{{product.price}}<span>
 						</span>
 					</p> 
 					<dl class="item-property">
 						<dt>Description</dt>
 						<dd>
-							<p id="description">{{product.description}}</p>
+							<p>{{product.description}}</p>
 						</dd>
 					</dl>
 					<dl class="param param-feature">
 						<dt>Delivery</dt>
 						<dd>Canada, USA</dd>
-					</dl> 
+					</dl> <!-- item-property-hor .// -->
 					<hr>
 					<dl class="param param-feature">
 						<dt>Rating</dt>
