@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 var db = require('../models/productModel');
 var cartdb = require('../models/cart');
+var reviewdb = require('../models/reviewModel');
 
 /* GET home page. */
 router.get('/products', function (req, res, next) {
@@ -22,6 +23,7 @@ router.get('/product/:id', function (req, res, next) {
   let id = parseInt(req.params.id);
   db.get('SELECT * FROM products WHERE id=?', [id], function (err, row) {
     if (!err) {
+      req.session.product = id;
       res.type('.html'); // set content type to html
       res.render('shop/product', {
         title: 'Product Page',
@@ -50,6 +52,24 @@ router.post('/rating', jsonParser, function (req, res, next) {
   });
 });
 
+/** 
+router.post('/review', jsonParser, function(req, res, next) {
+  let comment = req.body;
+  console.log(comment);
+  reviewdb.serialize(function() {
+    reviewdb.run('INSERT INTO reviews(username, product_id, comment) VALUES(?,?,?)', 
+      [req.session.user.username, req.session.product, comment]);
+    reviewdb.get('SELECT last_insert_rowid()', [], function (err, row) {
+      if(!err) {
+        console.log(row);
+        res.redirect('/product/:id');
+      }
+    });
+  });
+
+});
+*/
+
 router.get('/shoppingcart', function (req, res, next) {
   let totalPrice = 0;
   cartdb.all('SELECT * FROM cart WHERE username=?', [req.session.user.username], function (err, rows) {
@@ -68,24 +88,34 @@ router.get('/shoppingcart', function (req, res, next) {
   });
 });
 
-router.delete('/deleteSingleProduct', jsonParser, function (req, res, next) {
-  console.log("Hi");
+router.post('/deleteSingleProduct',jsonParser, function (req, res, next) {
+  console.log(req.session.user);
   let pname = req.body;
-
-  console.log(pname);
-  cartdb.run(`DELETE FROM cart WHERE username=? AND product_name=?`, [req.session.user.username, pname], function (err) {
+  console.log("recieved",pname);
+  cartdb.run(`DELETE FROM cart WHERE username=? AND product_name=?`, [req.session.user.username, pname.pname], function (err) {
     if (!err) {
-      console.log("here");
-      res.render('shop/shoppingcart', {
-        title: 'Shopping-cart',
-        status: "deleted"
-      });
-      console.log("tere");
+      res.send({url: '/shoppingcart'});
     }
     else {
       console.log(err);
     }
     console.log("delete", pname);
+  });
+});
+
+router.post('/updateQty', jsonParser, function(req, res, next) {
+  let qty = req.body.qty;
+  let pname = req.body.pname;
+  let cartid = parseInt(req.body.cartid);
+  console.log(qty, pname, cartid);
+  cartdb.run('UPDATE cart SET product_qty=? WHERE item_id=?', [qty, cartid], function(err, row) {
+    if(!err) {
+      res.send({url: '/shoppingcart'});
+    }
+    else {
+      console.log(err);
+    }
+    console.log("Update to", qty);
   });
 });
 
@@ -110,9 +140,7 @@ router.post('/add-to-cart/:id', jsonParser, function (req, res) {
 });
 
 router.get('/checkout', jsonParser, function (req, res, next) {
-  const qty = req.body;
   let totalPrice = 0;
-  console.log("qty:", qty);
   cartdb.all('SELECT * FROM cart WHERE username=?', [req.session.user.username], function (err, rows) {
     if (!err) {
       req.session.bought = rows;

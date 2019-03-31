@@ -43,7 +43,7 @@ app.use(cookieParser());
 app.use(function(req,res,next){
   console.log('before session');
   next();
-  console.log('after session');s
+  console.log('after session');
 })
 */
 app.use(cookieSession({

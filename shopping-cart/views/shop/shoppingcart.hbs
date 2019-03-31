@@ -48,36 +48,32 @@
                         </div>
                         <div class="col-12 text-sm-center col-sm-12 text-md-left col-md-6">
                             <a href="/product/{{this.product_id}}" ><h4 id="product_name" class="product-name"><strong style="color: black">{{this.product_name}}</strong></h4></a>
+                            <p hidden id="cartid">{{this.item_id}}</p>
                         </div>
                         <div class="col-12 col-sm-12 text-sm-center col-md-4 text-md-right row">
                             <div class="col-3 col-sm-3 col-md-6 text-md-right" style="padding-top: 5px">
                                 <h6 id="checkoutPrice"><strong>{{this.product_price}} <span class="text-muted">x</span></strong></h6>
                             </div>
-                            <div class="col-4 col-sm-4 col-md-4">
+                            <div class="col-3 col-sm-3 col-md-3">
                                 <div class="quantity">
                                     <input id="qty" type="number" step="1" max="99" min="1" value="{{this.product_qty}}" title="Qty" class="qty"
                                            size="4">
                                 </div>
                             </div>
-                            <div class="col-2 col-sm-2 col-md-2 text-right">
-                                <button id="singleDelete" type="button" class="btn btn-outline-danger btn-xs">
-                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                </button>
+                            <div class="col-3 col-sm-3 col-md-3 text-right">
+                                <button id="update" class="btn btn-outline-primary btn-xs"><i class="fa fa-refresh fa-lg" aria-hidden="true"></i></button>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-12 text-right">
+                                <button id="singleDelete" class="btn btn-outline-danger btn-xs"> <i class="fa fa-trash fa-lg" aria-hidden="true"></i></button>
                             </div>
                         </div>
                     </div>
                     <hr>
                 {{/each}}
-                    <!-- END PRODUCT -->
-                <div class="pull-right">
-                    <a href="/shoppingcart" class="btn btn-outline-secondary pull-right">
-                        Update shopping cart
-                    </a>
-                </div>
             </div>
             <div class="card-footer">
                 <div class="pull-right" style="margin: 10px">
-                    <a href="/checkout" id="checkout" class="btn btn-success pull-right">Checkout</a>
+                    <button onclick="window.location.href = '/checkout';" id="checkout" class="btn btn-success pull-right">Checkout</button>
                     <div class="pull-right" style="margin: 5px">
                         Total price: <b>${{totalPrice}}</b>
                     </div>
@@ -87,52 +83,56 @@
 </div>
 <script>
     const deleteButton = document.getElementById("singleDelete");
-    const checkoutButton = document.getElementById("checkout");
-    //let pname = document.getElementById("product_name").textContent;
+    const updateButton = document.getElementById('update');
 
-    checkoutButton.addEventListener('click', (evt) => {
-        console.log("checkout button click");
+    updateButton.addEventListener('click', (evt) => {
+        console.log('Update button click');
         let qty = parseInt(document.getElementById("qty").value);
+        let pname = document.getElementById("product_name").textContent;
+        let cartid = document.getElementById('cartid').textContent;
         let req = new XMLHttpRequest();
-        req.open('GET', `/checkout`);
+        req.open('POST', `/updateQty`);
         req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
         req.responseType = 'json';
         req.onload = function (evt) {
             if (req.status == 200) { // check for ok response
                 const resp = req.response;
                 console.log(resp);
+                window.location = resp.url;
             }
             else {
                 console.log('err', req);
             }
         };
-        console.log('sending', qty);
-        req.send(JSON.stringify(qty));
+        let msg = {qty: qty, pname: pname, cartid: cartid};
+        console.log('sending', msg);
+        req.send(JSON.stringify(msg));
     });
-
+    
     deleteButton.addEventListener('click', (evt) => {
         console.log("clicked delete button");   
         let pname = document.getElementById("product_name").textContent;
         let req = new XMLHttpRequest();
-        req.open('DELETE', `/deleteSingleProduct`);
+        req.open('POST', `/deleteSingleProduct`);
         req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
         req.responseType = 'json';
         req.onload = function (evt) {
             if (req.status == 200) { // check for ok response
                 const resp = req.response;
-                console.log(resp.status);
+                window.location = resp.url;
             }
             else {
                 console.log('err', req);
             }
         };
-        console.log(JSON.stringify(pname));
-        req.send(JSON.stringify(pname));
+        let msg = {pname: pname};
+        req.send(JSON.stringify(msg));
     });
+    
 
 </script>
 <br><br><br>
-
+s
 <footer id="myFooter">
     <div class="container">
         <div class="row">
