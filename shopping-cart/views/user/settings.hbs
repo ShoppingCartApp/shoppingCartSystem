@@ -34,11 +34,13 @@
 </div>
 </div>
 <script>
+
 //------------------Change Username
+
 let usern = document.getElementById('change-user');
 usern.addEventListener('click', (evt) => {
     let newUser = document.getElementById('usern').value;
-    errorMsg = document.getElementById('error-msg2');
+
     if( newUser == ''){
         errorMsg.textContent = "Please enter an username.";
     }
@@ -52,7 +54,6 @@ usern.addEventListener('click', (evt) => {
                 let res = req.response;
                 if(res.ok){
                     document.getElementById('usern').value = "";
-                    errorMsg.textContent = "";
                     window.alert('Username successfully changed.');
                     document.getElementById('userB').setAttribute("class","btn btn-info");
                     document.getElementById('userB').setAttribute("aria-expanded","false");
@@ -112,6 +113,8 @@ pass.addEventListener( 'click', (evt) => {
         req.send( JSON.stringify(obj));
     }
 });
+
+
 //---------------------------Change name
 let cname = document.getElementById('change-name');
 cname.addEventListener('click', (evt) => {
@@ -173,4 +176,9 @@ cemail.addEventListener('click', (evt) => {
             req.send( JSON.stringify(obj));
     }
 });
+
+
+
+
+
 </script>
