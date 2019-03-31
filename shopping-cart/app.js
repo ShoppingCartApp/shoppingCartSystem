@@ -5,10 +5,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var expressHbs = require('express-handlebars');
-var session = require('express-session');
 var flash = require('connect-flash');
-var SqliteStore = require('connect-sqlite3')(session);
-
 var userRouter = require('./routes/user');
 var indexRouter = require('./routes/index');
 
@@ -56,7 +53,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 // router set up
 app.use('/', userRouter);
 app.use('/', indexRouter);
-app.use('/user', session);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

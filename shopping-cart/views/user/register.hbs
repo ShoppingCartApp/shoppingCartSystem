@@ -1,3 +1,13 @@
+<html>
+<header>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<!--<link rel="stylesheet" href="node_modules/bootstrap-social/bootstrap-social.css">-->
+<link rel='stylesheet' href='/stylesheets/style.css' />
+<title>Register</title>
+</header>
+<body>
 <div id="box" class=".box">
     <form method="post" name="form">
         <label>First Name: </label><input type="text" name="firstName" id="fname" class="t"><br>
@@ -6,27 +16,44 @@
         <label>Username: </label><input type="text" name="username" id="user"class="t"><br>
         <label>Password: </label><input type="password" name="password" id="pass" class="t"><br>
     </form>
-    <button id="register" onclick="register()">Register</a>
+    <button id="register" onclick="register()">Register</button>
 </div>
+<div id="error"></div>
+</body>
+
 <script>
+    
 function register(){
     let user = document.getElementById('user').value;
     let pass = document.getElementById('pass').value;
     let email = document.getElementById('email').value;
     let fname = document.getElementById('fname').value;
     let lname = document.getElementById('lname').value;
+    let error = document.getElementById('error');
     console.log(email);
     let obj = {username:user,password:pass,FName:fname,LName:lname,email:email};
     if(user=="" ||pass==""||email==""||fname==""||lname==""){
-        window.alert("Please fill in all text boxes.")
+        error.textContent ="Please fill in all text boxes.";
         return
     }
     let req = new XMLHttpRequest();
     req.open('POST', '/user/register');
     req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
     req.responseType = 'json';
+
+    req.onload = function(evt) { 
+        let res = req.response;
+        if(res.ok){
+            console.log('ok');
+             window.location.href="/";
+        }
+        else{
+            console.log('error');
+            error.textContent = "Username already taken. Try again.";
+        }
+    }
     console.log(JSON.stringify(obj));
     req.send( JSON.stringify( obj ));
-    window.location.href="/";
-  }
+}
 </script>
+</html>

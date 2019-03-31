@@ -11,13 +11,15 @@ var currentUser = "";
 
 router.get('/', function(req, res, next) {
   res.render('user/login', {
-    title: "Login Page"
+    title: "Login Page",
+    layout: false
   });
 });
 
 router.get('/user/register', function(req, res, next) {
   res.render('user/register', {
-    title: "Registration Page"
+    title: "Registration Page",
+    layout: false
   });
 }); 
 
@@ -43,11 +45,6 @@ router.get('/user/profile', function(req,res,next){
     title: "Profile"
   });
 }); 
-router.get('/user/admin', function(req,res,next){
-  res.render('user/admin', {
-    title: "Admin Settings"
-  });
-});
 
 // User login function
 router.post('/login',jsonParser, function(req, res) {
@@ -87,9 +84,17 @@ userdb.get('SELECT * FROM users WHERE username = ?',
 router.post('/user/register',jsonParser, function(req, res,next) {
   var u = req.body;
   console.log(u);
-  userdb.run('INSERT INTO users(username,password,FName,LName,email) VALUES(?,?,?,?,?);',[u.username,sha256(u.password),u.FName,u.LName,u.email]);
-  console.log('inserted');
-   
+  userdb.get('SELECT * from users where username=?',[u.username],function(err,row){
+    if(row){
+      console.log('taken');
+      res.send({ok:false,err:"Username Taken"});
+    }
+    else{
+      userdb.run('INSERT INTO users(username,password,FName,LName,Email,admin) VALUES(?,?,?,?,?,?);',[u.username,sha256(u.password),u.FName,u.LName,u.email,0]);
+      console.log('inserted');
+      res.send({ok:true});
+    }
+  });
 });
 //User change password function, ---called by settings.
 router.post('/changePassword',jsonParser, function(req, res,next){
@@ -120,11 +125,21 @@ router.post('/changePassword',jsonParser, function(req, res,next){
 router.post('/changeUsername', jsonParser, function(req,res,next){
   var u = req.body;
   console.log(u);
-  userdb.get('UPDATE users SET username=? WHERE username = ?',[u.username, currentUser ],function(err,row){
-    if(err){
-      res.send(JSON.stringify({ok:false,err:' change user row error'}));        
+  userdb.get('SELECT * from users where username=?',[u.username],function(err,row){
+    if(row){
+      console.log('taken');
+      res.send({ok:false,err:"Username Taken"});
     }
-    res.send(JSON.stringify({ok:true}));
+    else{
+      userdb.get('UPDATE users SET username=? WHERE username = ?',[u.username, currentUser ],function(err,row){
+        if(err){
+          console.log('taken err');
+          res.send(JSON.stringify({ok:false,err:' change user row error'}));        
+        }
+        console.log('not taken');
+        res.send(JSON.stringify({ok:true}));
+      });
+    }
   });
 });
 
@@ -151,31 +166,57 @@ router.post('/changeEmail', jsonParser, function(req,res,next){
     });
 });
 
-
-//Admin delete account functin ----Called by admin page.
-router.post('/DeleteAccount',jsonParser, function(req, res,next){
-  var u = req.body;
-  console.log(u);
-  userdb.get('SELECT * FROM users WHERE username = ?',[ currentUser ],function(err,row){
-    console.log('row: '+row);
-    if(!err){
-      console.log('row pass: '+row.password+", old pass: "+u.password);
-      if(row.password == sha256(u.password)){
-        userdb.get('DELETE FROM users WHERE username = ?',[currentUser ],function(err,row){
-          if(err){
-            res.send(JSON.stringify({ok:false,err:' delete row error'}));        
-          }
-          res.send(JSON.stringify({ok:true}));
+function generate_users(res){
+  userdb.all(`SELECT * FROM users`,[], function(err, rows) {
+    if ( !err ) {
+        res.type('.html'); // set content type to html
+        res.render('user/admin', {
+            users : rows,
+            title : 'Admin Page'
         });
     }
+  });
+}
+
+//Get Admin page
+router.get('/user/admin', function(req,res,next){
+  generate_users(res);
+});
+
+
+//Admin delete account functin ----Called by admin page.
+router.post('/user/admin',jsonParser, function(req, res,next){
+  var u = req.body;
+  if(u.op == "delete"){
+   userdb.run('DELETE FROM users WHERE username = ?',[ u.username ],function(err,row){
+    if(!err){
+      console.log('deleted');
+      generate_users(res);      
+    }
+    else{
+      res.send(JSON.stringify({ok:false}));
+      }
+    });
+  }
+
+  if(u.op == "update"){
+    console.log(u.username);
+    console.log(u.FName);
+    console.log(u.LName);
+    console.log(u.Email);
+
+    userdb.run('UPDATE users SET username=?,FName=?,LName=?,Email=? WHERE password=?',[u.username, u.FName,u.LName,
+    u.Email,u.password],function(err,row){
+      if(!err){
+        console.log('updated');
+        generate_users(res);
+      }
       else{
         res.send(JSON.stringify({ok:false}));
       }
+    });
   }
-  else{
-    res.send(JSON.stringify({ok:false, err:'error'}));
-  }
-}); 
 });
+  
 
 module.exports = router;

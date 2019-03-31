@@ -534,3 +534,14 @@ button.btn.btn-info{
 #emailB{
     margin-bottom: 20px;
 }
+.admin-ul{
+    margin-top:20px;
+    margin-bottom: 20px;
+}
+
+.admin-c input{
+    margin-top:5px;
+}
+#nav-admin{
+    margin-right: 10px;
+}
