@@ -1,37 +1,54 @@
 <html>
 <header>
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-    <!--<link rel="stylesheet" href="node_modules/bootstrap-social/bootstrap-social.css">-->
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">    <!--<link rel="stylesheet" href="node_modules/bootstrap-social/bootstrap-social.css">-->
+	<link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
+<!--===============================================================================================-->
     <title>Login</title>
 </header>
 <body>
-<div id="box" class=".box">
-  <form method="post" name="form">
+	<div class="limiter">
+		<div class="container container-login100">
+			<div class="wrap-login100 p-l-85 p-r-85 p-t-55 p-b-55">
 
-    <div class="group">
-      <input type="text" placeholder="Username" class="txt" name="username" id="user">
-      <span class="highlight"></span>
-      <span class="bar"></span>
-      <label>Name</label>
-    </div>
+					<span class="login100-form-title p-b-32 display-1">
+						Account Login
+					</span>
 
-    <div class="group">
-      <input type="password" placeholder="Password" class="txt" name="password" id="pass">
-      <span class="highlight"></span>
-      <span class="bar"></span>
-      <label>Password</label>
-    </div>
-    </form>
-    <div class="buttons">
-      <button value="Login" id="login" class="b">Login</button>
-      <a href="user/register">Register</a>
-    </div>
-</div>
+					<div class="wrap-input100-l validate-input m-b-36" data-validate = "Username is required">
+						<input id="user" placeholder="Username" class="input100" type="text" name="username" >
+						<span class="focus-input100"></span>
+					</div>
+
+					<div class="wrap-input100-l validate-input m-b-12" data-validate = "Password is required">
+						<span class="btn-show-pass">
+							<i class="fa fa-eye"></i>
+						</span>
+						<input class="input100" id="pass" placeholder="Password" type="password" name="pass" >
+						<span class="focus-input100"></span>
+					</div>
+
+					<div class="container-login100-form-btn">
+						<button id="login" class="login100-form-btn">
+							Login
+						</button>
+            		
+            <a href="user/register" id="register-btn" class="login100-form-btn">
+							Register
+						</a>
+					</div>
+
+			</div>
+		</div>
+	</div>
+	
+
+	<div id="dropDownSelect1"></div>
 </body>
 <script>
+
   let login = document.getElementById('login');
   login.addEventListener('click',function(evt){
     let user = document.getElementById('user').value;
@@ -57,4 +74,7 @@
     req.send( JSON.stringify( obj ));
   });
 </script>
+    <script src="http://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+ 
 </html>

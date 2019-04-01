@@ -1,22 +1,47 @@
 <html>
 <header>
-
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<!--<link rel="stylesheet" href="node_modules/bootstrap-social/bootstrap-social.css">-->
-<link rel='stylesheet' href='/stylesheets/style.css' />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
 <title>Register</title>
 </header>
+
 <body>
-<div id="box" class=".box">
-    <form method="post" name="form">
-        <label>First Name: </label><input type="text" name="firstName" id="fname" class="t"><br>
-        <label>Last Name: </label><input type="text" name="lastName" id="lname" class="t"><br>
-        <label>Email: </label><input type="text" name="email"id="email" class="t"><br>
-        <label>Username: </label><input type="text" name="username" id="user"class="t"><br>
-        <label>Password: </label><input type="password" name="password" id="pass" class="t"><br>
-    </form>
-    <button id="register" onclick="register()">Register</button>
+<div class="limiter">
+    <div class="container container-login100">
+        <div class="wrap-login100 p-l-85 p-r-85 p-t-55 p-b-55">
+            <form class="login100-form validate-form flex-sb flex-w">
+					<span class="login100-form-title p-b-32 display-1">
+						Register
+					</span>
+                    <div class="wrap-input100 validate-input m-b-36" data-validate = "Username is required">
+                        <input id="fname" placeholder="First Name" class="input100" type="text" name="username" >
+                        <span class="focus-input100"></span>
+                    </div>
+                    <div class="wrap-input100 validate-input m-b-36" data-validate = "Username is required">
+                    <input class="input100" type="text" placeholder="Last Name" name="lastName" id="lname" class="t">
+                    <span class="focus-input100"></span>
+                    </div>
+                    <div class="wrap-input100 validate-input m-b-36" data-validate = "Username is required">
+                    <input class="input100" type="text" placeholder="Email"  name="email"id="email" class="t">
+                    <span class="focus-input100"></span>
+                    </div>
+                    <div class="wrap-input100 validate-input m-b-36" data-validate = "Username is required">
+                    <input class="input100" type="text" placeholder="Username" name="username" id="user"class="t">
+                    <span class="focus-input100"></span>
+                    </div>
+                    <div class="wrap-input100 validate-input m-b-36" data-validate = "Username is required">
+                    <input class="input100" type="password" placeholder="Password" name="password" id="pass" class="t">
+                    <span class="focus-input100"></span>
+                    </div>
+					</form>
+                    <div class="container-login100-form-btn">
+						<button id="reg" onclick="register()" class="login100-form-btn">
+							Submit
+						</button>
+                    </div>
+                    <div id="error" ></div>
+
+</div>
 </div>
 <div id="error"></div>
 </body>
