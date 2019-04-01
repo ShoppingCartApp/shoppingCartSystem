@@ -9,8 +9,6 @@
     <button id="register" onclick="register()">Register</a>
 </div>
 <script>
-
-
 function register(){
     let user = document.getElementById('user').value;
     let pass = document.getElementById('pass').value;
@@ -31,5 +29,4 @@ function register(){
     req.send( JSON.stringify( obj ));
     window.location.href="/";
   }
-
 </script>

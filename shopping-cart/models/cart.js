@@ -7,6 +7,7 @@ const db = new sqlite3.Database( __dirname + '/cart.db',
                 db.run(`
                     CREATE TABLE IF NOT EXISTS cart (
                         item_id INTEGER PRIMARY KEY,
+                        username TEXT,
                         product_id INTERGER,
                         product_name TEXT,
                         product_image TEXT,

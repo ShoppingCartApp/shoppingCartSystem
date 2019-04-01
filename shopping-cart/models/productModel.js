@@ -12,7 +12,13 @@ const db = new sqlite3.Database( __dirname + '/products.db',
                     imagePath TEXT,
                     description TEXT,
                     rating INTEGER,
-                    price FLOAT
+                    rating_num INTEGER,
+                    price FLOAT,
+                    star_5 INTEGER,
+                    star_4 INTEGER,
+                    star_3 INTEGER,
+                    star_2 INTEGER,
+                    star_1 INTEGER
                 )`);
                 console.log('opened products.db');
             });

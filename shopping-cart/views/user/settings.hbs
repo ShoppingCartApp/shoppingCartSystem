@@ -5,7 +5,7 @@
 <div id="demo" class="collapse">
 <label>New Username:</label> <input type='text' id='usern'><br>
 <button class="set-submit" id="change-user">Change Username</button>
-<div id="error-msg"></div>
+<div id="error-msg2"></div>
 </div>
 <br>
 <button type="button" class="btn btn-info" id="passB" data-toggle="collapse" data-target="#demo1">Change Password</button>
@@ -14,7 +14,7 @@
 <label> New Password:</label> <input type='password' id='new1'><br>
 <label> Re-enter New Password:</label> <input type='password' id='new2'><br>
 <button class="set-submit" id="sign-in">Change Password</button><br>
-<div id='error-msg1'></div>    
+<div id='error-msg'></div>    
 </div>
 <br>
 <button type="button" class="btn btn-info"  id="nameB" data-toggle="collapse" data-target="#demo3">Change Name</button>
@@ -34,13 +34,10 @@
 </div>
 </div>
 <script>
-
 //------------------Change Username
-
 let usern = document.getElementById('change-user');
 usern.addEventListener('click', (evt) => {
     let newUser = document.getElementById('usern').value;
-    let errorMsg = document.getElementById('error-msg');
     if( newUser == ''){
         errorMsg.textContent = "Please enter an username.";
     }
@@ -67,14 +64,13 @@ usern.addEventListener('click', (evt) => {
             req.send( JSON.stringify(obj));
     }
 });
-
 //------------------Change Password
 let pass = document.getElementById('sign-in');
 pass.addEventListener( 'click', (evt) => {
     let oldPassword = document.getElementById('old').value;
     let new1 = document.getElementById('new1').value;
     let new2 = document.getElementById('new2').value;
-    let errorMsg = document.getElementById('error-msg1');
+    let errorMsg = document.getElementById('error-msg');
     //Error checking
     if(new1 != new2){
         errorMsg.textContent = "New Password does not match. Try Again.";
@@ -114,12 +110,9 @@ pass.addEventListener( 'click', (evt) => {
         req.send( JSON.stringify(obj));
     }
 });
-
-
 //---------------------------Change name
 let cname = document.getElementById('change-name');
 cname.addEventListener('click', (evt) => {
-    let errorMsg = document.getElementById('error-msg3');
     let fname = document.getElementById('fname').value;
     let lname = document.getElementById('lname').value;
     if( fname == '' || lname == ''){
@@ -151,7 +144,6 @@ cname.addEventListener('click', (evt) => {
 });
 let cemail = document.getElementById('Change-email');
 cemail.addEventListener('click', (evt) => {
-    let errorMsg = document.getElementById('error-msg4');
     let email = document.getElementById('email').value;
     if( email == ''){
         errorMsg.textContent = "Please enter your new email.";
@@ -179,9 +171,4 @@ cemail.addEventListener('click', (evt) => {
             req.send( JSON.stringify(obj));
     }
 });
-
-
-
-
-
 </script>

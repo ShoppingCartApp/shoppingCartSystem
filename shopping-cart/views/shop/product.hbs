@@ -1,103 +1,396 @@
-<div class="container">
-	<div class="card">
-		<div class="row">
-			<aside class="col-sm-5 border-right">
-				<article class="gallery-wrap">
-					<div class="img-big-wrap">
-						<div> <a href="#"><img src="{{product.imagePath}}"></a></div>
-					</div> <!-- slider-product.// -->
-				</article> <!-- gallery-wrap .end// -->
-			</aside>
-			<aside class="col-sm-7">
-				<article class="card-body p-5">
-					<h3 class="title mb-3">{{product.name}}</h3>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#"><img class="headerLogo" src="/logo.png"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-					<p class="price-detail-wrap">
-						<span class="price h3 text-warning">
-							<span class="currency">CAN $</span><span class="num">{{product.price}}<span>
-						</span>
-					</p> 
-					<dl class="item-property">
-						<dt>Description</dt>
-						<dd>
-							<p>{{product.description}}</p>
-						</dd>
-					</dl>
-					<dl class="param param-feature">
-						<dt>Delivery</dt>
-						<dd>Canada, USA</dd>
-					</dl> <!-- item-property-hor .// -->
-					<hr>
-					<dl class="param param-feature">
-						<dt>Rating</dt>
-						<dd>
-							<span class="fa fa-star checked"></span>
-							<span class="fa fa-star checked"></span>
-							<span class="fa fa-star checked"></span>
-							<span class="fa fa-star"></span>
-							<span class="fa fa-star"></span>
-						</dd>
-					</dl>
-					<hr>
-					<div class="row">
-						<div class="col-sm-5">
-							<dl class="param param-inline">
-								<dt>Quantity: </dt>
-								<dd>
-									<select id="qty" class="form-control form-control-sm" style="width:70px;">
-										<option value="1"> 1 </option>
-										<option value="2"> 2 </option>
-										<option value="3"> 3 </option>
-										<option value="4"> 4 </option>
-										<option value="5"> 5 </option>
-										<option value="6"> 6 </option>
-										<option value="7"> 7 </option>
-									</select>
-								</dd>
-							</dl> 
-						</div> 
-						<div class="col-sm-7">
-						</div> 
-					</div> 
-					<hr>
-					<a href="/product/{{product.id}}" id="addButton" class="btn btn-lg btn-primary text-uppercase"> <i class="fas fa-shopping-cart"></i> Add to
-						cart </a>
-				</article> 
-			</aside> 
-		</div> 
-	</div> 
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/products">Home <span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+    <span class="navbar-text">
+      <a href="/shoppingcart"><i class="fas fa-shopping-cart"></i> Shopping Cart
+        <span class="badge">{{cartQty}}</span>
+      </a>
+    </span>
+    <span class="navbar-text dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-user-cog"></i> User Management
+      </a>
+      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <a class="dropdown-item" href="/user/profile">Profile</a>
+        <a class="dropdown-item" href="/user/settings">Settings</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="/">Logout</a>
+      </div>
+    </span>
+  </div>
+</nav>
+
+<br>
+
+<div class="container">
+  <div class="card">
+    <div class="row">
+      <aside class="col-sm-5 border-right">
+        <article class="gallery-wrap">
+          <div class="img-big-wrap">
+            <div> <a href="#"><img id="img" src="{{product.imagePath}}"></a></div>
+          </div>
+        </article>
+      </aside>
+      <aside class="col-sm-7">
+        <article class="card-body p-5">
+          <h3 id="pname" class="title mb-3">{{product.name}}</h3>
+          <h5 id="ppid">{{product.id}}</h5>
+          <p class="price-detail-wrap">
+            <span class="price h3 text-warning">
+              <span class="currency">CAN $</span><span id="productPrice" class="num">{{product.price}}
+              </span>
+          </p>
+          <dl class="item-property">
+            <dt>Description</dt>
+            <dd>
+              <p id="description">{{product.description}}</p>
+            </dd>
+          </dl>
+          <dl class="param param-feature">
+            <dt>Delivery</dt>
+            <dd>Canada, USA</dd>
+          </dl>
+          <hr>
+          <dl class="param param-feature">
+            <dt>Rating</dt>
+            <dd><span class="rating" style="display: inline-block" data-default-rating="{{product.rating}}"></span></dd>
+          </dl>
+          <script>
+            function StarRating(target) {
+              function attr(name, d) {
+                var a = target.getAttribute(name);
+                return (a ? a : d);
+              }
+              var max = parseInt(attr('data-stars', 5)),
+                disabled = typeof target.getAttribute('disabled') != 'undefined',
+                defaultRating = parseFloat(attr('data-default-rating', 0)),
+                currentRating = -1,
+                stars = [];
+
+              target.style.display = 'inline-block';
+
+              for (var s = 0; s < max; s++) {
+                var n = document.createElement('span');
+                n.className = 'star';
+                n.addEventListener('click', starClick);
+                if (s > 0)
+                  stars[s - 1].appendChild(n);
+                else
+                  target.appendChild(n);
+
+                stars.push(n);
+              }
+
+              function disable() {
+                target.setAttribute('disabled', '');
+                disabled = true;
+              }
+              this.disable = disable;
+
+              function enable() {
+                target.removeAttribute('disabled');
+                disabled = false;
+              }
+              this.enable = enable;
+
+              function setCurrentRating(rating) {
+                currentRating = rating;
+                target.setAttribute('data-rating', currentRating);
+                showCurrentRating();
+              }
+              this.setCurrentRating = setCurrentRating;
+
+              function setDefaultRating(rating) {
+                defaultRating = rating;
+                target.setAttribute('data-default-rating', defaultRating);
+                showDefaultRating();
+              }
+              this.setDefaultRating = setDefaultRating;
+
+              this.onrate = function (rating) { };
+
+              target.addEventListener('mouseout', function () {
+                disabled = target.getAttribute('disabled') !== null;
+                if (!disabled)
+                  showCurrentRating();
+              });
+
+              target.addEventListener('mouseover', function () {
+                disabled = target.getAttribute('disabled') !== null;
+                if (!disabled)
+                  clearRating();
+              });
+
+              showDefaultRating();
+
+              function showRating(r) {
+                clearRating();
+                for (var i = 0; i < stars.length; i++) {
+                  if (i >= r)
+                    break;
+                  if (i === Math.floor(r) && i !== r)
+                    stars[i].classList.add('half');
+                  stars[i].classList.add('active');
+                }
+              }
+
+              function showCurrentRating() {
+                var ratingAttr = parseFloat(attr('data-rating', 0));
+                if (ratingAttr) {
+                  currentRating = ratingAttr;
+                  showRating(currentRating);
+                } else {
+                  showDefaultRating();
+                }
+              }
+
+              function showDefaultRating() {
+                defaultRating = parseFloat(attr('data-default-rating', 0));
+                showRating(defaultRating);
+              }
+
+              function clearRating() {
+                for (var i = 0; i < stars.length; i++) {
+                  stars[i].classList.remove('active');
+                  stars[i].classList.remove('half');
+                }
+              }
+
+              function starClick(e) {
+                if (disabled) return;
+
+                if (this === e.target) {
+                  var starClicked = stars.indexOf(e.target);
+                  if (starClicked !== -1) {
+                    var starRating = starClicked + 1;
+                    setCurrentRating(starRating);
+                    if (typeof this.onrate === 'function')
+                      this.onrate(currentRating);
+                    var evt = new CustomEvent('rate', {
+                      detail: starRating,
+                    });
+                    target.dispatchEvent(evt);
+                  }
+                }
+              }
+            }
+            var ratings = document.getElementsByClassName('rating');
+
+            for (var i = 0; i < ratings.length; i++) {
+              var r = new StarRating(ratings[i]);
+              ratings[i].addEventListener('rate', function (e) {
+                console.log('Rating: ' + e.detail);
+
+                var pname = document.getElementById("pname").innerText;
+                let obj = { pname: pname, rating: e.detail }
+                let req = new XMLHttpRequest();
+                req.open('POST', `/rating`);
+                req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+                req.responseType = 'json';
+                req.onload = function (evt) {
+                  if (req.status == 200) { // check for ok response
+                    const resp = req.response;
+                    console.log(resp.status);
+                    window.alert("Thank you for your rating!");
+                    location.reload();
+                  }
+                  else {
+                    console.log('err', req);
+                  }
+                };
+                console.log('sending', obj);
+                req.send(JSON.stringify(obj));
+              });
+            }
+          </script>
+          <hr>
+          <div class="row">
+            <div class="col-sm-5">
+              <dl class="param param-inline">
+                <dt>Quantity: </dt>
+                <dd>
+                  <select id="qty" class="form-control form-control-sm" style="width:70px;">
+                    <option value="1"> 1 </option>
+                    <option value="2"> 2 </option>
+                    <option value="3"> 3 </option>
+                    <option value="4"> 4 </option>
+                    <option value="5"> 5 </option>
+                    <option value="6"> 6 </option>
+                    <option value="7"> 7 </option>
+                  </select>
+                </dd>
+              </dl>
+            </div>
+            <div class="col-sm-7">
+            </div>
+          </div>
+          <hr>
+          <a href="/product/{{product.id}}" id="addButton" class="btn btn-lg btn-primary text-uppercase"> <i
+              class="fas fa-shopping-cart"></i> Add to
+            cart </a>
+          <a href="/products" id="backbutton" class="btn btn-lg btn-primary text-uppercase"> <i
+              class="fas fa-arrow-left"></i> Back to Shopping</a>
+        </article>
+      </aside>
+    </div>
+  </div>
 </div>
 <script>
-    const addButton = document.getElementById('addButton');
-    const imagePath = document.getElementById('img').src;
-    const pname = document.getElementById('pname').textContent;
-	const pdescription = document.getElementById('description').innerText;
-	let purl = document.getElementById('addButton').href;
-	let pid = (purl.match(/(\d+)/g) || []);
-    let price = parseFloat(document.getElementById('productPrice').innerText);
-	let sel = document.getElementById('qty');
-	let qty = parseInt(sel.options[sel.selectedIndex].value);
+  const addButton = document.getElementById('addButton');
+  const imagePath = document.getElementById('img').src;
+  const pname = document.getElementById('pname').textContent;
+  const pdescription = document.getElementById('description').innerText;
+  let purl = document.getElementById('addButton').href;
+  let pid = (purl.match(/(\d+)/g) || []);
+  let price = parseFloat(document.getElementById('productPrice').innerText);
+  let idx = document.getElementById('qty').selectedIndex;
 
-    let obj = {pid: pid[1], image: imagePath, productName: pname, productPrice: price, description: pdescription, qty: qty};
-	console.log(obj);
-    addButton.addEventListener('click', (evt) => {
-        let req = new XMLHttpRequest();
-        req.open('POST', `/add-to-cart/:id`);
-        req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-        req.responseType = 'json';
-        req.onload = function (evt) {
-            if (req.status == 200) { // check for ok response
-                const resp = req.response;
-                console.log(resp);
-				window.alert("Item has been added to the cart");
-            }
-            else {
-                console.log('err', req);
-            }
-        };
-        console.log('sending', obj);
-        req.send(JSON.stringify(obj));
-    });
+  addButton.addEventListener('click', (evt) => {
+    let idx = document.getElementById('qty').selectedIndex;
+    let options = document.getElementById('qty').options;
+    let qty = parseInt(options[idx].text);
+    let obj = { pid: pid[1], image: imagePath, productName: pname, productPrice: price, description: pdescription, qty: qty };
+    let req = new XMLHttpRequest();
+    req.open('POST', `/add-to-cart/:id`);
+    req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+    req.responseType = 'json';
+    req.onload = function (evt) {
+      if (req.status == 200) { // check for ok response
+        const resp = req.response;
+        console.log(resp);
+        window.alert("Item has been added to the cart");
+      }
+      else {
+        console.log('err', req);
+      }
+    };
+    console.log('sending', obj);
+    req.send(JSON.stringify(obj));
+  });
 </script>
 
+<hr>
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="page-header">
+        <h1><small class="pull-right">{{reviewsNum}} comments</small> </h1>
+      </div>
+      <hr>
+      <div class="comments-list">
+        {{#each reviews}}
+        <div class="media">
+          <div class="media-body">
+            <h4 class="media-heading user_name">{{this.username}}</h4>
+            <p>{{this.comment}}</p>
+          </div>
+        </div>
+        {{/each}}
+      </div>
+    </div>
+  </div>
+</div>
+<hr>
+<div class="container">
+  <form>
+    <div class="form-group">
+      <label for="comment">Comment:</label>
+      <textarea class="form-control" rows="5" id="comment"></textarea>
+      <br>
+      <div style="margin-left: 1033px">
+        <a id="submitb" role="button" class="btn btn-primary" >Submit</a>
+      </div>
+    </div>
+  </form>
+  <script>
+    const submitButton = document.getElementById('submitb');
 
+    submitButton.addEventListener('click', (evt) => {
+      console.log("submit button click");
+      let comment = document.getElementById('comment').value;
+      let name = document.getElementById("pname").innerText;
+      let pid = parseInt(document.getElementById('ppid').innerText);
+      console.log(comment);
+      let req = new XMLHttpRequest();
+      req.open('POST', '/review');
+      req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+      req.responseType = 'json';
+      req.onload = function (evt) {
+        if (req.status == 200) { // check for ok response
+          const resp = req.response;
+          console.log(resp.status);
+          window.alert("Your review sent successfully");
+          location.reload();
+        }
+        else {
+          console.log('err', req);
+        }
+      };
+      let msg = {comment: comment, name: name, pid: pid};
+      console.log('sending', msg);
+      req.send(JSON.stringify(msg));
+    });
+
+  </script>
+</div>
+
+<footer id="myFooter">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-3">
+        <img src="logo.png">
+      </div>
+      <div class="col-sm-2">
+        <h5>Get started</h5>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Sign up</a></li>
+          <li><a href="#">Log in</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-2">
+        <h5>About us</h5>
+        <ul>
+          <li><a href="#">Company Information</a></li>
+          <li><a href="#">Contact us</a></li>
+          <li><a href="#">Reviews</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-2">
+        <h5>Support</h5>
+        <ul>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Help desk</a></li>
+          <li><a href="#">Forums</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-3" id="socialIcon">
+        <div class="text-center">
+          <a class="btn btn-social-icon btn-google" href="http://google.com/+"><i
+              class="fab fa-google-plus-square fa-2x"></i></a>
+          <a class="btn btn-social-icon btn-facebook" href="http://www.facebook.com/profile.php?id="><i
+              class="fab fa-facebook-square fa-2x"></i></i></a>
+          <a class="btn btn-social-icon btn-twitter" href="http://twitter.com/"><i
+              class="fab fa-twitter-square fa-2x"></i></a>
+          <a class="btn btn-social-icon" href="mailto:"><i class="fas fa-envelope-square fa-2x"></i></a>
+        </div>
+        <button type="button" class="btn btn-default">Contact us</button>
+      </div>
+    </div>
+  </div>
+  <div class="footer-copyright">
+    <p>© 2019 Copyright Shopping Cart System </p>
+  </div>
+</footer>
