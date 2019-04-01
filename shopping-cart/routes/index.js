@@ -23,16 +23,23 @@ router.get('/product/:id', function (req, res, next) {
   let id = parseInt(req.params.id);
   db.get('SELECT * FROM products WHERE id=?', [id], function (err, row) {
     if (!err) {
-      req.session.product = id;
-      res.type('.html'); // set content type to html
-      res.render('shop/product', {
-        title: 'Product Page',
-        product: row
+      reviewdb.all('SELECT * FROM reviews WHERE product_id=?', [id], function(err, reviews) {
+        if(!err) {
+          let length = reviews.length;
+          res.type('.html'); // set content type to html
+          res.render('shop/product', {
+            title: 'Product Page',
+            product: row,
+            reviews: reviews,
+            reviewsNum: length
+          });
+        }
       });
     }
   });
 });
 
+/** 
 router.post('/rating', jsonParser, function (req, res, next) {
   let obj = req.body;
   console.log(obj);
@@ -51,24 +58,84 @@ router.post('/rating', jsonParser, function (req, res, next) {
     });
   });
 });
+*/
 
-/** 
-router.post('/review', jsonParser, function(req, res, next) {
-  let comment = req.body;
-  console.log(comment);
-  reviewdb.serialize(function() {
-    reviewdb.run('INSERT INTO reviews(username, product_id, comment) VALUES(?,?,?)', 
-      [req.session.user.username, req.session.product, comment]);
-    reviewdb.get('SELECT last_insert_rowid()', [], function (err, row) {
-      if(!err) {
-        console.log(row);
-        res.redirect('/product/:id');
+router.post('/rating', jsonParser, function (req, res, next) {
+  let obj = req.body;
+  console.log("recieved",obj);
+  db.serialize(function () {
+    db.get('SELECT * FROM products WHERE name=?', [obj.pname], function (err, row) {
+      let totalRatingNum = row.star_5+row.star_4+row.star_3+row.star_2+row.star_1+1;
+      if ( obj.rating === 5){
+        let currentRating = Math.round( ((1+row.star_5)*5+(row.star_4*4)+(row.star_3*3)+(row.star_2)*2+(row.star_1)*1) / totalRatingNum );
+        let temp = row.star_5 + 1;
+        db.run('UPDATE products SET star_5=? WHERE name=?', [temp, obj.pname], function(err, r) {
+          //console.log("Updated 5_star", r);
+        });
+        db.run('UPDATE products SET rating=? WHERE name=?', [currentRating, obj.pname], function (err, rw) {
+          res.send(JSON.stringify({status: "Updated"}));
+        });
+      }
+      else if ( obj.rating === 4){
+        let currentRating = Math.round( ((row.star_5)*5+(1+row.star_4)*4+(row.star_3*3)+(row.star_2)*2+(row.star_1)*1) / totalRatingNum );
+        let temp = row.star_4 + 1;
+        db.run('UPDATE products SET star_4=? WHERE name=?', [temp, obj.pname], function(err, r) {
+          //console.log("Updated 4_star", r.star_4);
+        });
+        db.run('UPDATE products SET rating=? WHERE name=?', [currentRating, obj.pname], function (err, rw) {
+          res.send(JSON.stringify({status: "Updated"}));
+        });
+      }
+      else if ( obj.rating === 3) {
+        let currentRating = Math.round( ((row.star_5)*5+(row.star_4*4)+(1+row.star_3)*3+(row.star_2)*2+(row.star_1)*1) / totalRatingNum );
+        let temp = row.star_3 + 1;
+        db.run('UPDATE products SET star_3=? WHERE name=?', [temp, obj.pname], function(err, r) {
+          //console.log("Updated 3_star", r.star_3);
+        });
+        db.run('UPDATE products SET rating=? WHERE name=?', [currentRating, obj.pname], function (err, rw) {
+          res.send(JSON.stringify({status: "Updated"}));
+        });
+      }
+      else if ( obj.rating === 2) {
+        let currentRating = Math.round( ((row.star_5)*5+(row.star_4*4)+(row.star_3)*3+(1+row.star_2)*2+(row.star_1)*1) / totalRatingNum );
+        let temp = row.star_2 + 1;
+        db.run('UPDATE products SET star_2=? WHERE name=?', [temp, obj.pname], function(err, r) {
+          //console.log("Updated 2_star", r.star_2);
+        });
+        db.run('UPDATE products SET rating=? WHERE name=?', [currentRating, obj.pname], function (err, rw) {
+          res.send(JSON.stringify({status: "Updated"}));
+        });
+      }
+      else if ( obj.rating === 1) {
+        let currentRating = Math.round( ((row.star_5)*5+(row.star_4*4)+(row.star_3)*3+(row.star_2)*2+(1+row.star_1)*1) / totalRatingNum );
+        let temp = row.star_1 + 1;
+        db.run('UPDATE products SET star_1=? WHERE name=?', [temp, obj.pname], function(err, r) {
+          //console.log("Updated 1_star", r.star_1);
+        });
+        db.run('UPDATE products SET rating=? WHERE name=?', [currentRating, obj.pname], function (err, rw) {
+          res.send(JSON.stringify({status: "Updated"}));
+        });
       }
     });
   });
-
 });
-*/
+
+
+router.post('/review', jsonParser, function(req, res, next) {
+  let obj = req.body;
+  console.log(obj);
+  reviewdb.serialize(function() {
+    reviewdb.run('INSERT INTO reviews(username, product_id, comment) VALUES(?,?,?)', 
+      [req.session.user.username, obj.pid, obj.comment]);
+    reviewdb.get('SELECT last_insert_rowid()', [], function (err, row) {
+      if(!err) {
+        console.log(row);
+        res.send(JSON.stringify({status: "Updated"}));
+      }
+    });
+  });
+});
+
 
 router.get('/shoppingcart', function (req, res, next) {
   let totalPrice = 0;

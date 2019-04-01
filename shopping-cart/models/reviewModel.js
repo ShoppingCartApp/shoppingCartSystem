@@ -5,7 +5,7 @@ const db = new sqlite3.Database( __dirname + '/reviews.db',
         if ( !err ) {
             db.serialize( function() {
                 db.run(`
-                    CREATE TABLE IF NOT EXISTS cart (
+                    CREATE TABLE IF NOT EXISTS reviews (
                         review_id INTEGER PRIMARY KEY,
                         username TEXT,
                         product_id INTERGER,

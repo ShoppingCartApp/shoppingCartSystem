@@ -66,6 +66,7 @@ router.post('/login',jsonParser, function(req, res) {
                   console.log('row checked');
                   if( sha256(u.password) == row.password ) {
                       currentUser = u.username;
+                      req.session.user = u;
                       res.send( JSON.stringify({ ok: true }) );
                   }
                   else {

@@ -22,10 +22,10 @@
         <i class="fas fa-user-cog"></i> User Management
       </a>
       <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-        <a class="dropdown-item" href="/user/login">login</a>
-        <a class="dropdown-item" href="/user/register">register</a>
+        <a class="dropdown-item" href="/user/profile">Profile</a>
+        <a class="dropdown-item" href="/user/settings">Settings</a>
         <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="#">Something else here</a>
+        <a class="dropdown-item" href="/">Logout</a>
       </div>
     </span>
   </div>
@@ -61,15 +61,69 @@
                                 </div>
                             </div>
                             <div class="col-3 col-sm-3 col-md-3 text-right">
-                                <button id="update" class="btn btn-outline-primary btn-xs"><i class="fa fa-refresh fa-lg" aria-hidden="true"></i></button>
+                                <button id="update{{this.item_id}}" class="btn btn-outline-primary btn-xs"><i class="fa fa-refresh fa-lg" aria-hidden="true"></i></button>
                             </div>
                             <div class="col-12 col-sm-12 col-md-12 text-right">
-                                <button id="singleDelete" class="btn btn-outline-danger btn-xs"> <i class="fa fa-trash fa-lg" aria-hidden="true"></i></button>
+                                <button id="singleDelete{{this.item_id}}" class="btn btn-outline-danger btn-xs"> <i class="fa fa-trash fa-lg" aria-hidden="true"></i></button>
                             </div>
                         </div>
                     </div>
+                    <script>
+                        let deleteButton = document.getElementById("singleDelete{{this.item_id}}");
+                        let updateButton = document.getElementById('update{{this.item_id}}');
+                        
+                        updateButton.addEventListener('click', (evt) => {
+                            console.log('Update button click');
+                            let qty = parseInt(document.getElementById("qty").value);
+                            let pname = document.getElementById("product_name").textContent;
+                            let cartid = document.getElementById('cartid').textContent;
+                            let req = new XMLHttpRequest();
+                            req.open('POST', `/updateQty`);
+                            req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+                            req.responseType = 'json';
+                            req.onload = function (evt) {
+                                if (req.status == 200) { // check for ok response
+                                    const resp = req.response;
+                                    console.log(resp);
+                                    window.location = resp.url;
+                                }
+                                else {
+                                    console.log('err', req);
+                                }
+                            };
+                            let msg = {qty: qty, pname: pname, cartid: cartid};
+                            console.log('sending', msg);
+                            req.send(JSON.stringify(msg));
+                        });
+                        
+                        deleteButton.addEventListener('click', (evt) => {
+                            console.log("clicked delete button");   
+                            let pname = document.getElementById("product_name").textContent;
+                            let req = new XMLHttpRequest();
+                            req.open('POST', `/deleteSingleProduct`);
+                            req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+                            req.responseType = 'json';
+                            req.onload = function (evt) {
+                                if (req.status == 200) { // check for ok response
+                                    const resp = req.response;
+                                    window.location = resp.url;
+                                }
+                                else {
+                                    console.log('err', req);
+                                }
+                            };
+                            let msg = {pname: pname};
+                            req.send(JSON.stringify(msg));
+                        });
+                        
+
+                    </script>
+
                     <hr>
                 {{/each}}
+            </div>
+            <div hidden id="cartids">
+                {{cartids}}
             </div>
             <div class="card-footer">
                 <div class="pull-right" style="margin: 10px">
@@ -81,58 +135,9 @@
             </div>
         </div>
 </div>
-<script>
-    const deleteButton = document.getElementById("singleDelete");
-    const updateButton = document.getElementById('update');
 
-    updateButton.addEventListener('click', (evt) => {
-        console.log('Update button click');
-        let qty = parseInt(document.getElementById("qty").value);
-        let pname = document.getElementById("product_name").textContent;
-        let cartid = document.getElementById('cartid').textContent;
-        let req = new XMLHttpRequest();
-        req.open('POST', `/updateQty`);
-        req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-        req.responseType = 'json';
-        req.onload = function (evt) {
-            if (req.status == 200) { // check for ok response
-                const resp = req.response;
-                console.log(resp);
-                window.location = resp.url;
-            }
-            else {
-                console.log('err', req);
-            }
-        };
-        let msg = {qty: qty, pname: pname, cartid: cartid};
-        console.log('sending', msg);
-        req.send(JSON.stringify(msg));
-    });
-    
-    deleteButton.addEventListener('click', (evt) => {
-        console.log("clicked delete button");   
-        let pname = document.getElementById("product_name").textContent;
-        let req = new XMLHttpRequest();
-        req.open('POST', `/deleteSingleProduct`);
-        req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-        req.responseType = 'json';
-        req.onload = function (evt) {
-            if (req.status == 200) { // check for ok response
-                const resp = req.response;
-                window.location = resp.url;
-            }
-            else {
-                console.log('err', req);
-            }
-        };
-        let msg = {pname: pname};
-        req.send(JSON.stringify(msg));
-    });
-    
-
-</script>
 <br><br><br>
-s
+
 <footer id="myFooter">
     <div class="container">
         <div class="row">
