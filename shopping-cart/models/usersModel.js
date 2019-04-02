@@ -9,7 +9,8 @@ const db = new sqlite3.Database( __dirname + '/users.db',
                 password TEXT,
                 FName TEXT,
                 LName TEXT,
-                Email TEXT
+                Email TEXT,
+                admin INTEGER
             )`);
             console.log('opened users.db');
         }

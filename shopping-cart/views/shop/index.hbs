@@ -11,15 +11,19 @@
         <a class="nav-link" href="/products">Home <span class="sr-only">(current)</span></a>
       </li>
     </ul>
+    <span class="navbar-text" id="nav-admin">
+      <a href="/user/admin">Admin Settings
+       </a>
+    </span>
     <span class="navbar-text">
       <a href="/shoppingcart"><i class="fas fa-shopping-cart"></i> Shopping Cart
-        <span class="badge"></span>
+        <span class="badge" style="background-color: black; color: white">{{cartItemNum}}</span>
       </a>
     </span>
     <span class="navbar-text dropdown">
       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
         aria-haspopup="true" aria-expanded="false">
-        <i class="fas fa-user-cog"></i> User Management
+        <i class="fas fa-user-cog"></i> Hi {{user.username}}
       </a>
       <div class="dropdown-menu" aria-labelledby="navbarDropdown">
         <a class="dropdown-item" href="/user/profile">Profile</a>
@@ -111,12 +115,12 @@
             {{#each products}}
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail">
-                    <img src="{{this.imagePath}}" class="img-responsive" alt="monster hunter" height="280" width="220">
+                    <img src="{{this.imagePath}}" class="img-responsive rounded mx-auto d-block" alt="monster hunter" height="280" width="220">
                     <div class="caption">
-                        <a class="nav-link" href="/product/{{this.id}}">
+                        <a class="nav-link text-center" href="/product/{{this.id}}">
                             <h4>{{this.name}}</h4>
                         </a>
-                        <div class="clearfix">
+                        <div class="clearfix text-center">
                             <div class="price">${{this.price}}</div>
                             <p>
                                 <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

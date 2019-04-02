@@ -28,6 +28,9 @@
     background-color: black;
 }
 
+#details {
+    margin-left: 150px;
+}
 
 .gallery-wrap .img-big-wrap img {
     height: 450px;

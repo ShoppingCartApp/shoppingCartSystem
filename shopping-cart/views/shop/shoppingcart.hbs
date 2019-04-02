@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#"><img class="headerLogo" src="/logo.png"></a>
+    <a class="navbar-brand" href="#"><i class="fas fa-dragon fa-lg"></i></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -19,7 +19,7 @@
         <span class="navbar-text dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-user-cog"></i> User Management
+                <i class="fas fa-user-cog"></i> Hi {{user.username}}
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="/user/profile">Profile</a>
@@ -32,7 +32,7 @@
 </nav>
 
 <script src="https://use.fontawesome.com/c560c025cf.js"></script>
-<div class="container">
+<div class="container" style="margin-bottom: 130px">
     <div class="card shopping-cart">
         <div class="card-header bg-dark text-light">
             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
@@ -143,13 +143,13 @@
 
 </script>
 
-<br><br><br>
+<br><br><br><br><br>
 
 <footer id="myFooter">
     <div class="container">
         <div class="row">
             <div class="col-sm-3">
-                <img src="logo.png">
+                <i class="fas fa-dragon fa-5x"></i>
             </div>
             <div class="col-sm-2">
                 <h5>Get started</h5>

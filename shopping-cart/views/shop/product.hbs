@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#"><img class="headerLogo" src="/logo.png"></a>
+  <a class="navbar-brand" href="#"><i class="fas fa-dragon fa-lg"></i></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -19,7 +19,7 @@
     <span class="navbar-text dropdown">
       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
         aria-haspopup="true" aria-expanded="false">
-        <i class="fas fa-user-cog"></i> User Management
+        <i class="fas fa-user-cog"></i> Hi {{user.username}}
       </a>
       <div class="dropdown-menu" aria-labelledby="navbarDropdown">
         <a class="dropdown-item" href="/user/profile">Profile</a>
@@ -46,7 +46,7 @@
       <aside class="col-sm-7">
         <article class="card-body p-5">
           <h3 id="pname" class="title mb-3">{{product.name}}</h3>
-          <h5 id="ppid">{{product.id}}</h5>
+          <h5 hidden id="ppid">{{product.id}}</h5>
           <p class="price-detail-wrap">
             <span class="price h3 text-warning">
               <span class="currency">CAN $</span><span id="productPrice" class="num">{{product.price}}
@@ -289,12 +289,18 @@
 <hr>
 <div class="container">
   <div class="row">
-    <div class="col-md-8">
+    <div class="col">
       <div class="page-header">
         <h1><small class="pull-right">{{reviewsNum}} comments</small> </h1>
       </div>
       <hr>
-      <div class="comments-list">
+      <div class="row">
+        <div class="col text-center">
+          <a class="btn btn-default" data-toggle="collapse" href="#reviews" role="button" aria-expanded="false" aria-controls="reviews">Show Comments</a>
+          <br><br>
+        </div>
+      </div>
+      <div id="reviews" class="comments-list collapse">
         {{#each reviews}}
         <div class="media">
           <div class="media-body">
@@ -312,11 +318,13 @@
 <div class="container">
   <form>
     <div class="form-group">
-      <label for="comment"><i class="fas fa-user-secret fa-lg"></i> Comment:</label>
+      <label for="comment"><i class="fas fa-comment-alt fa-lg"></i> Comment:</label>
       <textarea class="form-control pb-cmnt-textarea" rows="5" id="comment" placeholder="Write your comment here......"></textarea>
       <br>
-      <div style="margin-left: 1040px">
-        <a id="submitb" role="button" class="btn btn-primary" >Share</a>
+      <div class="row">
+        <div class="col text-right">
+          <a id="submitb" role="button" class="btn btn-primary" >Share</a>
+        </div>
       </div>
     </div>
   </form>
@@ -356,7 +364,7 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-3">
-        <img src="logo.png">
+        <i class="fas fa-dragon fa-5x"></i>
       </div>
       <div class="col-sm-2">
         <h5>Get started</h5>
