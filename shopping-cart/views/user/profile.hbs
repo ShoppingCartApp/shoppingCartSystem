@@ -1,3 +1,36 @@
-// Merge master -> kirk
-//Profile
-//Admin settings in each header for indv page
+<div class="container">
+
+    <h1>{{FName}}</h1>
+
+
+
+
+
+
+    <h1>Your Games</h1>
+    <div class="row">
+        {{#each product}}
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                  <img class="img-responsive" src="{{this.product_image}}" alt="prewiew" width="220" height="280">
+                    <div class="caption">
+                        
+                        <h4>{{this.product_name}}</h4>
+                        
+                        <div class="clearfix">
+                            <p>
+                                <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+            {{/each}}
+        
+    </div>
+</div>

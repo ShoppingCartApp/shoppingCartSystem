@@ -1,68 +1,17 @@
 <div class="container">
-	<div class="card">
-		<div class="row">
-			<aside class="col-sm-5 border-right">
-				<article class="gallery-wrap">
-					<div class="img-big-wrap">
-						<div> <a href="#"><img src="{{product.imagePath}}"></a></div>
-					</div> <!-- slider-product.// -->
-				</article> <!-- gallery-wrap .end// -->
-			</aside>
-			<aside class="col-sm-7">
-				<article class="card-body p-5">
-					<h3 class="title mb-3">{{product.name}}</h3>
-
-					<p class="price-detail-wrap">
-						<span class="price h3 text-warning">
-							<span class="currency">CAN $</span><span class="num">{{product.price}}<span>
-						</span>
-					</p> <!-- price-detail-wrap .// -->
-					<dl class="item-property">
-						<dt>Description</dt>
-						<dd>
-							<p>{{product.description}}</p>
-						</dd>
-					</dl>
-					<dl class="param param-feature">
-						<dt>Delivery</dt>
-						<dd>Canada, USA</dd>
-					</dl> <!-- item-property-hor .// -->
-					<hr>
-					<dl class="param param-feature">
-						<dt>Rating</dt>
-						<dd>
-							<span class="fa fa-star checked"></span>
-							<span class="fa fa-star checked"></span>
-							<span class="fa fa-star checked"></span>
-							<span class="fa fa-star"></span>
-							<span class="fa fa-star"></span>
-						</dd>
-					</dl>
-					<hr>
-					<div class="row">
-						<div class="col-sm-5">
-							<dl class="param param-inline">
-								<dt>Quantity: </dt>
-								<dd>
-									<select class="form-control form-control-sm" style="width:70px;">
-										<option> 1 </option>
-										<option> 2 </option>
-										<option> 3 </option>
-									</select>
-								</dd>
-							</dl> <!-- item-property .// -->
-						</div> <!-- col.// -->
-						<div class="col-sm-7">
-						</div> <!-- col.// -->
-					</div> <!-- row.// -->
-					<hr>
-					<a href="#" class="btn btn-lg btn-primary text-uppercase"> <i class="fas fa-shopping-cart"></i> Add to
-						cart </a>
-				</article> <!-- card-body.// -->
-			</aside> <!-- col.// -->
-		</div> <!-- row.// -->
-	</div> <!-- card.// -->
-
+  <div class="card">
+    <div class="row">
+      <aside class="col-sm-5 border-right">
+        <article class="gallery-wrap">
+          <div class="img-big-wrap">
+            <div> <a href="#"><img id="img" src="{{product.imagePath}}"></a></div>
+          </div>
+        </article>
+      </aside>
+      <aside class="col-sm-7">
+        <article class="card-body p-5">
+          <h3 id="pname" class="title mb-3">{{product.name}}</h3>
+          <h5 id="ppid">{{product.id}}</h5>
           <p class="price-detail-wrap">
             <span class="price h3 text-warning">
               <span class="currency">CAN $</span><span id="productPrice" class="num">{{product.price}}
@@ -218,8 +167,9 @@
                 req.onload = function (evt) {
                   if (req.status == 200) { // check for ok response
                     const resp = req.response;
-                    console.log(resp);
-                    //ratings.setAttribute("data-default-rating", resp);
+                    console.log(resp.status);
+                    window.alert("Thank you for your rating!");
+                    location.reload();
                   }
                   else {
                     console.log('err', req);
@@ -255,7 +205,7 @@
           <a href="/product/{{product.id}}" id="addButton" class="btn btn-lg btn-primary text-uppercase"> <i
               class="fas fa-shopping-cart"></i> Add to
             cart </a>
-          <a href="/products" id="addButton" class="btn btn-lg btn-primary text-uppercase"> <i
+          <a href="/products" id="backbutton" class="btn btn-lg btn-primary text-uppercase"> <i
               class="fas fa-arrow-left"></i> Back to Shopping</a>
         </article>
       </aside>
@@ -297,39 +247,22 @@
 </script>
 
 <hr>
-
 <div class="container">
   <div class="row">
     <div class="col-md-8">
       <div class="page-header">
-        <h1><small class="pull-right">45 comments</small> </h1>
+        <h1><small class="pull-right">{{reviewsNum}} comments</small> </h1>
       </div>
       <hr>
       <div class="comments-list">
+        {{#each reviews}}
         <div class="media">
           <div class="media-body">
-            <h4 class="media-heading user_name">Baltej Singh</h4>
-            Wow! this is really great.
+            <h4 class="media-heading user_name">{{this.username}}</h4>
+            <p>{{this.comment}}</p>
           </div>
         </div>
-        <div class="media">
-          <div class="media-body">
-            <h4 class="media-heading user_name">Baltej Singh</h4>
-            Wow! this is really great.
-          </div>
-        </div>
-        <div class="media">
-          <div class="media-body">
-            <h4 class="media-heading user_name">Baltej Singh</h4>
-            Wow! this is really great.
-          </div>
-        </div>
-        <div class="media">
-          <div class="media-body">
-            <h4 class="media-heading user_name">Baltej Singh</h4>
-            Wow! this is really great.
-          </div>
-        </div>
+        {{/each}}
       </div>
     </div>
   </div>
@@ -340,6 +273,40 @@
     <div class="form-group">
       <label for="comment">Comment:</label>
       <textarea class="form-control" rows="5" id="comment"></textarea>
+      <br>
+      <div style="margin-left: 1033px">
+        <a id="submitb" role="button" class="btn btn-primary" >Submit</a>
+      </div>
     </div>
   </form>
+  <script>
+    const submitButton = document.getElementById('submitb');
+
+    submitButton.addEventListener('click', (evt) => {
+      console.log("submit button click");
+      let comment = document.getElementById('comment').value;
+      let name = document.getElementById("pname").innerText;
+      let pid = parseInt(document.getElementById('ppid').innerText);
+      console.log(comment);
+      let req = new XMLHttpRequest();
+      req.open('POST', '/review');
+      req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+      req.responseType = 'json';
+      req.onload = function (evt) {
+        if (req.status == 200) { // check for ok response
+          const resp = req.response;
+          console.log(resp.status);
+          window.alert("Your review sent successfully");
+          location.reload();
+        }
+        else {
+          console.log('err', req);
+        }
+      };
+      let msg = {comment: comment, name: name, pid: pid};
+      console.log('sending', msg);
+      req.send(JSON.stringify(msg));
+    });
+
+  </script>
 </div>

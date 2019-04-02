@@ -1,11 +1,14 @@
 var createError = require('http-errors');
-var cookieSession = require('cookie-session');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var expressHbs = require('express-handlebars');
+const cookieSession = require('cookie-session');
+var session = require('express-session');
 var flash = require('connect-flash');
+var SqliteStore = require('connect-sqlite3')(session);
+
 var userRouter = require('./routes/user');
 var indexRouter = require('./routes/index');
 
@@ -16,6 +19,7 @@ app.use(cookieSession({
   //keys: ['key1', 'key2'],
   secret: 'foo'
 }));
+
 // view engine setup
 app.engine('.hbs', expressHbs({defaultLayout: 'layout', extname: '.hbs'}));
 app.set('views', path.join(__dirname, 'views'));
@@ -45,14 +49,15 @@ app.use(cookieParser());
 app.use(function(req,res,next){
   console.log('before session');
   next();
-  console.log('after session');s
+  console.log('after session');
 })
 */
-app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(express.static(path.join(__dirname, 'public')));
 // router set up
 app.use('/', userRouter);
 app.use('/', indexRouter);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
@@ -68,5 +73,4 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
 module.exports = app;

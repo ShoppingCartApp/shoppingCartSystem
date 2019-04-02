@@ -1,20 +1,93 @@
+<style>
 
-<ul class="admin-ul">
+#container {
+    position:absolute;
+        top:50%;
+        left:50%;
+        background-color:white;
+        z-index:1002;
+        overflow:auto;
+        width:400px;
+        height:400px;
+        margin-left:-200px;
+        margin-top:-200px; 
+        visibility: hidden;
+}
+#container:target {
+    visibility: visible;
+    display: block;
+}
+#admin-tab{
+    margin:auto;
+    text-align:center;
+    margin-top:50px;
+    margin-bottom: 50px;
+}
+#container-b{
+text-align: center;
+
+}
+#container-b input{
+    margin-bottom:10px;
+}
+#container-b label{
+    text-align: right;
+    display: inline-block;
+    width: 100px;
+}
+#username-f{
+    margin-top:20px;
+}
+</style>
+<table id="admin-tab" class="admin-ul" style="font-size: 14px;">
+    <tr><th>Username</th><th>Password</th><th>First Name</th><th>Last Name</th><th>Email</th><th>Admin</th><th>Update</th><th>Delete</th></delete></tr>
     {{#each users}}
-        <li>
             <form method=post class="admin-c">
-                Username: 
-                <input id="username" type=text name="username" size=16 value="{{username}}">
-                First Name: 
-                <input id="name"type=text name="FName" size=16 value="{{FName}}">
-                Last Name:
-                <input id="name"type=text name="LName" size=16 value="{{LName}}">
-                Email:
-                <input id="email" type=text name="Email" size=16 value="{{Email}}">
-                <input type="hidden" name="password" value={{password}}>
-                <input type=submit name="op" value="update">
-                <input type=submit name="op" value="delete">
+                <tr> 
+                <td><input id="username" type=text name="username" size=16 value="{{username}}"></td>
+
+                <td><input id="password" type=text name="password" size=16 value="{{password}}"></td>              
+
+                <td><input id="name"type=text name="FName" size=16 value="{{FName}}"></td>
+               <td><input id="name"type=text name="LName" size=16 value="{{LName}}"></td>
+                <input type="hidden" name="id" name="rowid" value={{rowid}}>
+                <td><input id="email" type=text name="Email" size=16 value="{{Email}}"></td>
+                <td><input type="checkbox" id="adminC" disabled="disabled" name="admin" value="{{admin}}"></td>
+                <td><input type=submit name="op" value="update"></td>
+                <td><input type=submit name="op" value="delete"></td>
             </form>
-        </li>
+            </tr>
+            <!---
+            <div id="container">
+                <div id="container-b">
+            <form method=post class="admin-c">
+                <label>Username:</label> 
+                <input id="username-f" type=text name="username" size=16 value="{{username}}"><br>
+                <label>Password:</label>
+                <input id="pass-f" type=text name="password" size=16 value="{{password}}"><br>
+                <label>First Name:</label> 
+                <input id="name"type=text name="FName" size=16 value="{{FName}}"><br>
+                <label>Last Name:</label>
+                <input id="name"type=text name="LName" size=16 value="{{LName}}"><br>
+                <label>Email:</label>
+                <input type="hidden" name="id" value={{rowid}}>
+                <input id="email" type=text name="Email" size=16 value="{{Email}}"><br>
+                <input type="hidden" name="password" value={{password}}><br>
+                <input type=submit name="op" value="update"><br>
+                <input type=submit name="op" value="delete"><br>
+            </form>
+             
+                <a href="#">Close</a>
+        </div>
+</div>
+-->
     {{/each}}
-</ul>
+</table>
+
+<script>
+function check(a){
+    
+        console.log(1);
+    
+}
+</script>
