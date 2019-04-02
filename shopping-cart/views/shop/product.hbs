@@ -270,7 +270,12 @@
       if (req.status == 200) { // check for ok response
         const resp = req.response;
         console.log(resp);
-        window.alert("Item has been added to the cart");
+        if (resp.exist == false) {
+          window.alert("Item has been added to the cart");
+        }
+        else {
+          window.alert("Item is already in the shopping cart");
+        }
       }
       else {
         console.log('err', req);
@@ -293,10 +298,11 @@
         {{#each reviews}}
         <div class="media">
           <div class="media-body">
-            <h4 class="media-heading user_name">{{this.username}}</h4>
+            <h2 class="media-heading user_name"><i class="fas fa-user-secret fa-lg"></i> {{this.username}}</h2>
             <p>{{this.comment}}</p>
           </div>
         </div>
+        <br>
         {{/each}}
       </div>
     </div>
@@ -306,11 +312,11 @@
 <div class="container">
   <form>
     <div class="form-group">
-      <label for="comment">Comment:</label>
-      <textarea class="form-control" rows="5" id="comment"></textarea>
+      <label for="comment"><i class="fas fa-user-secret fa-lg"></i> Comment:</label>
+      <textarea class="form-control pb-cmnt-textarea" rows="5" id="comment" placeholder="Write your comment here......"></textarea>
       <br>
-      <div style="margin-left: 1033px">
-        <a id="submitb" role="button" class="btn btn-primary" >Submit</a>
+      <div style="margin-left: 1040px">
+        <a id="submitb" role="button" class="btn btn-primary" >Share</a>
       </div>
     </div>
   </form>

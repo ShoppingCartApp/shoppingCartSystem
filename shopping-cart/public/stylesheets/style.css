@@ -494,3 +494,11 @@
 .comments-list .media{
     border-bottom: 1px dotted #ccc;
 }
+
+.pb-cmnt-textarea {
+    resize: none;
+    padding: 20px;
+    height: 130px;
+    width: 100%;
+    border: 1px solid #F2F2F2;
+}

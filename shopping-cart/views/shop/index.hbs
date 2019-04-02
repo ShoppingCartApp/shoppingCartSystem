@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#"><img class="headerLogo" src="/logo.png"></a>
+  <a class="navbar-brand" href="#"><i class="fas fa-dragon fa-lg"></i></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -44,11 +44,11 @@
                                 alt="pic">
                             <div class="carousel-caption d-none d-md-block">
                                 <h2>
-                                    <font color="white">{{products.[1].name}}</font> <span class="badge badge-danger">HOT</span>
+                                    <a href="product/{{products.[1].id}}"><font color="white">{{products.[1].name}}</font></a> <span class="badge badge-danger">HOT</span>
                                     <span class="badge badge-pill badge-secondary">Free</span>
                                 </h2>
                                 <p class="d-none d-sm-block">
-                                    <font color="white">Add something here......
+                                    <font color="white">Come and get one!!!
                                 </p>
                                 </font>
                             </div>
@@ -59,12 +59,12 @@
                                 alt="pic">
                             <div class="carousel-caption d-none d-md-block">
                                 <h2>
-                                    <font color="white">{{products.[0].name}} </font><span
+                                    <a href="product/{{products.[0].id}}"><font color="white">{{products.[0].name}}</font></a> <span
                                         class="badge badge-danger">SPECIAL</span> <span
                                         class="badge badge-pill badge-secondary">$79.99</span>
                                 </h2>
                                 <p class="d-none d-sm-block">
-                                    <font color="white">Add something here......
+                                    <font color="white">You can not miss this one!!!
                                 </p>
                                 </font>
                                 </p>
@@ -76,12 +76,12 @@
                                 alt="pic">
                             <div class="carousel-caption d-none d-md-block">
                                 <h2>
-                                    <font color="white">{{products.[2].name}}</font> <span
+                                    <a href="product/{{products.[2].id}}"><font color="white">{{products.[2].name}}</font></a> <span
                                         class="badge badge-danger">NEW</span> <span
                                         class="badge badge-pill badge-secondary">$79.99</span>
                                 </h2>
                                 <p class="d-none d-sm-block">
-                                    <font color="white">Add something here......
+                                    <font color="white">New and fresh!!!
                                 </p>
                                 </font>
                                 </p>
@@ -139,7 +139,8 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-3">
-                <img src="logo.png">
+                <br>
+                <i class="fas fa-dragon fa-5x"></i>
             </div>
             <div class="col-sm-2">
                 <h5>Get started</h5>
