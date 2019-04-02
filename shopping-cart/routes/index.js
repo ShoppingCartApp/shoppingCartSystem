@@ -182,7 +182,7 @@ router.post('/updateQty', jsonParser, function(req, res, next) {
     else {
       console.log(err);
     }
-    console.log("Update to", qty);
+    console.log("Update qty to", qty);
   });
 });
 
@@ -190,17 +190,24 @@ router.post('/add-to-cart/:id', jsonParser, function (req, res) {
   let id = parseInt(req.params.id);
   const product = req.body;
   cartdb.serialize(function () {
-    cartdb.run('INSERT INTO cart(username, product_id, product_name, product_price, product_image, product_description, product_qty) VALUES(?,?,?,?,?,?,?)',
-      [req.session.user.username, product.pid, product.productName, product.productPrice, product.image, product.description, product.qty]);
-    cartdb.get('SELECT last_insert_rowid()', [], function (err, row) {
-      if (!err) {
-        console.log(row);
-        let id = row['last_insert_rowid()'];
-        let p = {
-          id: id
-        };
-        req.session.totalQty += 1;
-        res.send(p);
+    cartdb.get('SELECT * FROM cart WHERE product_id=?', [product.pid], function(err,r) {
+      if (r == null || r == [] || r==undefined) {
+        cartdb.run('INSERT INTO cart(username, product_id, product_name, product_price, product_image, product_description, product_qty) VALUES(?,?,?,?,?,?,?)',
+          [req.session.user.username, product.pid, product.productName, product.productPrice, product.image, product.description, product.qty]);
+        cartdb.get('SELECT last_insert_rowid()', [], function (err, row) {
+          if (!err) {
+            console.log(row);
+            let id = row['last_insert_rowid()'];
+            let p = {
+              id: id
+            };
+            res.send({exist: false});
+          }
+        });
+      }
+      else {
+        console.log("product already in the shopping cart.");
+        res.send({exist: true});
       }
     });
   });
