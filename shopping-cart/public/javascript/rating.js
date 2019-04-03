@@ -120,13 +120,13 @@ var ratings = document.getElementsByClassName('rating');
 
 for (var i = 0; i < ratings.length; i++) {
     var r = new StarRating(ratings[i]);
-    ratings[i].addEventListener('rate', function (e) {
-        console.log('Rating: ' + e.detail);
+    ratings[i].addEventListener('rate', function (evt) {
+        console.log('Rating: ' + evt.detail);
 
         var pname = document.getElementById("pname").innerText;
         let obj = {
             pname: pname,
-            rating: e.detail
+            rating: evt.detail
         }
         let req = new XMLHttpRequest();
         req.open('POST', `/rating`);

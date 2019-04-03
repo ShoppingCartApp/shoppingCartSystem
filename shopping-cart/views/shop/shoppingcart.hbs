@@ -8,7 +8,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="/products">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/products" style="font-family: cursive"><h3>PlayMaster</h3><span class="sr-only">(current)</span></a>
             </li>
         </ul>
         <span class="navbar-text">
@@ -43,7 +43,7 @@
         </div>
         <div class="card-body">
             {{#each products}}
-            <div class="row">
+            <div class="row probbb">
                 <div class="col-12 col-sm-12 col-md-2 text-center">
                     <img class="img-responsive" src="{{this.product_image}}" alt="prewiew" width="120" height="80">
                 </div>
@@ -52,7 +52,7 @@
                         <h4 id="product_name" class="product-name"><strong
                                 style="color: black">{{this.product_name}}</strong></h4>
                     </a>
-                    <p hidden id="cartid">{{this.item_id}}</p>
+                    <p hidden class="cartid" id="cartid">{{this.item_id}}</p>
                 </div>
                 <div class="col-12 col-sm-12 text-sm-center col-md-4 text-md-right row">
                     <div class="col-3 col-sm-3 col-md-6 text-md-right" style="padding-top: 5px">
@@ -66,11 +66,11 @@
                         </div>
                     </div>
                     <div class="col-3 col-sm-3 col-md-3 text-right">
-                        <button id="update" class="btn btn-outline-primary btn-xs"><i class="fa fa-refresh fa-lg"
+                        <button pid="update" class="btn btn-outline-primary btn-xs replace"><i class="fa fa-refresh fa-lg"
                                 aria-hidden="true"></i></button>
                     </div>
                     <div class="col-12 col-sm-12 col-md-12 text-right">
-                        <button id="singleDelete" class="btn btn-outline-danger btn-xs"> <i class="fa fa-trash fa-lg"
+                        <button id="singleDelete" class="btn btn-outline-danger btn-xs delete"> <i class="fa fa-trash fa-lg"
                                 aria-hidden="true"></i></button>
                     </div>
                 </div>
@@ -105,8 +105,6 @@
                 <h5>Get started</h5>
                 <ul>
                     <li><a href="#">Home</a></li>
-                    <li><a href="#">Sign up</a></li>
-                    <li><a href="#">Log in</a></li>
                 </ul>
             </div>
             <div class="col-sm-2">

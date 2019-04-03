@@ -63,7 +63,6 @@ router.post('/login', jsonParser, function (req, res) {
           if (sha256(u.password) == row.password) {
             req.session.user = u;
             req.session.islogin = true;
-            req.session.cartItem = row.cartItem;
             res.send(JSON.stringify({
               ok: true
             }));
@@ -100,7 +99,6 @@ router.post('/user/register', jsonParser, function (req, res, next) {
     } else {
       userdb.run('INSERT INTO users(username,password,FName,LName,Email,admin,cartItem) VALUES(?,?,?,?,?,?,?);', [u.username, sha256(u.password), u.FName, u.LName, u.email, 0, 0]);
       console.log('inserted');
-      req.session.cartItemNum = 0;
       res.send({
         ok: true
       });
