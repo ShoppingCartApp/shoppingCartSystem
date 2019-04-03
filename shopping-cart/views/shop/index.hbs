@@ -11,13 +11,15 @@
         <a class="nav-link" href="/products">Home <span class="sr-only">(current)</span></a>
       </li>
     </ul>
+    <!--
     <span class="navbar-text" id="nav-admin">
       <a href="/user/admin">Admin Settings
        </a>
     </span>
+    -->
     <span class="navbar-text">
       <a href="/shoppingcart"><i class="fas fa-shopping-cart"></i> Shopping Cart
-        <span class="badge" style="background-color: black; color: white">{{cartItemNum}}</span>
+        <span class="badge" style="background-color: grey; color: white">{{cartItem}}</span>
       </a>
     </span>
     <span class="navbar-text dropdown">
@@ -28,6 +30,7 @@
       <div class="dropdown-menu" aria-labelledby="navbarDropdown">
         <a class="dropdown-item" href="/user/profile">Profile</a>
         <a class="dropdown-item" href="/user/settings">Settings</a>
+        <a class="dropdown-item" href="/user/admin">Admin Settings</a>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="/">Logout</a>
       </div>
