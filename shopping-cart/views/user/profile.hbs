@@ -38,17 +38,16 @@
   </div>
 </nav>
 
-<div class="container">
+<div class="container" id="profContent">
     <div  id="prof-cont">
-    <h3 class="h3-profile">Username: <label>{{this.username.username}}</h3><br>
-    <h3 class="h3-profile">Name: {{this.username.FName}} {{this.username.LName}}</h3><br>
-    <h3 class="h3-profile">Email: {{this.username.Email}}</h3><br>
+    <label class="h3-profile">Username: <label>{{this.username.username}}</label><br>
+    <label class="h3-profile">Name: {{this.username.FName}} {{this.username.LName}}</label><br>
+    <label class="h3-profile">Email: {{this.username.Email}}</label><br>
     <a href="/user/settings" class="set-submit" id="change-user">Change Information</a>
-    <div id="error-msg2"></div>
     </div>
 
 
-    <h1>Your Games</h1>
+    <h1 id="gamedisplay"><u>Your Games</u></h1>
     <div class="row">
         {{#each product}}
             <div class="col-sm-6 col-md-4">

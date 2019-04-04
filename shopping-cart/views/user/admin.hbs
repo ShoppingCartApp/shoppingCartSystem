@@ -89,7 +89,7 @@ text-align: center;
                <td><input id="name"type=text name="LName" size=16 value="{{LName}}"></td>
                 <input type="hidden" name="id" name="rowid" value={{rowid}}>
                 <td><input id="email" type=text name="Email" size=16 value="{{Email}}"></td>
-                <td><input type="checkbox" id="adminC" disabled="disabled" name="admin" value="{{admin}}"></td>
+                <td><input type="checkbox" id="adminC" style="display:none;" disabled="disabled" name="admin" value="{{admin}}"></td>
                 <td><input type=submit name="op" value="update"></td>
                 <td><input type=submit onclick="delete()" name="op" value="delete"></td>
             </form>
@@ -146,4 +146,7 @@ text-align: center;
             return false;
         }   
     }
+
+
+
 </script>

@@ -525,9 +525,22 @@ div#settings-b button{
     width: 180px;
 }
 .h3-profile{
-    text-align: right;
+    text-align: center;
     width:200px;
 }
 #prof-cont{
-    border:thin black;
+    border: solid thin black;
+    margin-top:10px;
+    width:400px;
+    margin-bottom:20px;
+    margin-left:auto;
+    margin-right:auto;
+    text-align: center;
+}
+#profContent{
+    text-align: center;
+}
+#gamedisplay{
+    margin-bottom: 10px;
+    
 }
