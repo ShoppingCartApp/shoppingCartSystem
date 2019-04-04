@@ -5,12 +5,13 @@ const db = new sqlite3.Database( __dirname + '/users.db',
         if ( !err ) {
             db.run(`
                 CREATE TABLE IF NOT EXISTS users (
-                    username TEXT PRIMARY KEY,
-                    password TEXT,
-                    FName TEXT,
-                    LName TEXT,
-                    Email TEXT,
-                    admin INTEGER
+                username TEXT PRIMARY KEY,
+                password TEXT,
+                FName TEXT,
+                LName TEXT,
+                Email TEXT,
+                admin INTEGER,
+                cartItem INTEGER
             )`);
             console.log('opened users.db');
         }

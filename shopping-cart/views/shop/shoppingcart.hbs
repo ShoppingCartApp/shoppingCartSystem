@@ -1,106 +1,147 @@
-<script src="https://use.fontawesome.com/c560c025cf.js"></script>
-<div class="container">
-   <div class="card shopping-cart">
-            <div class="card-header bg-dark text-light">
-                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                Shipping cart
-                <a href="/products" class="btn btn-outline-info btn-sm pull-right">Continue shopping</a>
-                <div class="clearfix"></div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#"><i class="fas fa-dragon fa-lg"></i></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/products" style="font-family: cursive"><h3>PlayMaster</h3><span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+        <span class="navbar-text">
+            <a href="/shoppingcart"><i class="fas fa-shopping-cart"></i> Shopping Cart
+                <span class="badge" style="background-color: grey; color: white">{{cartItem}}</span>
+            </a>
+        </span>
+        <span class="navbar-text dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-user-cog"></i> Hi {{user.username}}
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="/user/profile">Profile</a>
+                <a class="dropdown-item" href="/user/settings">Settings</a>
+                <a class="dropdown-item" href="/user/admin" id="admindd" style="display:none;">Admin Settings</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/">Logout</a>
             </div>
-            <div class="card-body">
-                {{#each products}}
-                    <div class="row">
-                        <div class="col-12 col-sm-12 col-md-2 text-center">
-                                <img class="img-responsive" src="{{this.product_image}}" alt="prewiew" width="120" height="80">
-                        </div>
-                        <div class="col-12 text-sm-center col-sm-12 text-md-left col-md-6">
-                            <a href="/product/{{this.product_id}}" ><h4 id="product_name" class="product-name"><strong style="color: black">{{this.product_name}}</strong></h4></a>
-                            <p hidden id="cartid">{{this.item_id}}</p>
-                        </div>
-                        <div class="col-12 col-sm-12 text-sm-center col-md-4 text-md-right row">
-                            <div class="col-3 col-sm-3 col-md-6 text-md-right" style="padding-top: 5px">
-                                <h6 id="checkoutPrice"><strong>{{this.product_price}} <span class="text-muted">x</span></strong></h6>
-                            </div>
-                            <div class="col-3 col-sm-3 col-md-3">
-                                <div class="quantity">
-                                    <input id="qty" type="number" step="1" max="99" min="1" value="{{this.product_qty}}" title="Qty" class="qty"
-                                           size="4">
-                                </div>
-                            </div>
-                            <div class="col-3 col-sm-3 col-md-3 text-right">
-                                <button id="update{{this.item_id}}" class="btn btn-outline-primary btn-xs"><i class="fa fa-refresh fa-lg" aria-hidden="true"></i></button>
-                            </div>
-                            <div class="col-12 col-sm-12 col-md-12 text-right">
-                                <button id="singleDelete{{this.item_id}}" class="btn btn-outline-danger btn-xs"> <i class="fa fa-trash fa-lg" aria-hidden="true"></i></button>
-                            </div>
+        </span>
+    </div>
+</nav>
+
+<script src="https://use.fontawesome.com/c560c025cf.js"></script>
+<div class="container" style="margin-bottom: 130px">
+    <div class="card shopping-cart">
+        <div class="card-header bg-dark text-light">
+            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+            Shipping cart
+            <a href="/products" class="btn btn-outline-info btn-sm pull-right">Continue shopping</a>
+            <div class="clearfix"></div>
+        </div>
+        <div class="card-body">
+            {{#each products}}
+            <div class="row probbb">
+                <div class="col-12 col-sm-12 col-md-2 text-center">
+                    <img class="img-responsive" src="{{this.product_image}}" alt="prewiew" width="120" height="80">
+                </div>
+                <div class="col-12 text-sm-center col-sm-12 text-md-left col-md-6">
+                    <a href="/product/{{this.product_id}}">
+                        <h4 id="product_name" class="product-name"><strong
+                                style="color: black">{{this.product_name}}</strong></h4>
+                    </a>
+                    <p hidden class="cartid" id="cartid">{{this.item_id}}</p>
+                </div>
+                <div class="col-12 col-sm-12 text-sm-center col-md-4 text-md-right row">
+                    <div class="col-3 col-sm-3 col-md-6 text-md-right" style="padding-top: 5px">
+                        <h6 id="checkoutPrice"><strong>{{this.product_price}} <span class="text-muted">x</span></strong>
+                        </h6>
+                    </div>
+                    <div class="col-3 col-sm-3 col-md-3">
+                        <div class="quantity">
+                            <input id="qty" type="number" step="1" max="99" min="1" value="{{this.product_qty}}"
+                                title="Qty" class="qty" size="4">
                         </div>
                     </div>
-                    <script>
-                        let deleteButton = document.getElementById("singleDelete{{this.item_id}}");
-                        let updateButton = document.getElementById('update{{this.item_id}}');
-                        
-                        updateButton.addEventListener('click', (evt) => {
-                            console.log('Update button click');
-                            let qty = parseInt(document.getElementById("qty").value);
-                            let pname = document.getElementById("product_name").textContent;
-                            let cartid = document.getElementById('cartid').textContent;
-                            let req = new XMLHttpRequest();
-                            req.open('POST', `/updateQty`);
-                            req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-                            req.responseType = 'json';
-                            req.onload = function (evt) {
-                                if (req.status == 200) { // check for ok response
-                                    const resp = req.response;
-                                    console.log(resp);
-                                    window.location = resp.url;
-                                }
-                                else {
-                                    console.log('err', req);
-                                }
-                            };
-                            let msg = {qty: qty, pname: pname, cartid: cartid};
-                            console.log('sending', msg);
-                            req.send(JSON.stringify(msg));
-                        });
-                        
-                        deleteButton.addEventListener('click', (evt) => {
-                            console.log("clicked delete button");   
-                            let pname = document.getElementById("product_name").textContent;
-                            let req = new XMLHttpRequest();
-                            req.open('POST', `/deleteSingleProduct`);
-                            req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-                            req.responseType = 'json';
-                            req.onload = function (evt) {
-                                if (req.status == 200) { // check for ok response
-                                    const resp = req.response;
-                                    window.location = resp.url;
-                                }
-                                else {
-                                    console.log('err', req);
-                                }
-                            };
-                            let msg = {pname: pname};
-                            req.send(JSON.stringify(msg));
-                        });
-                        
-
-                    </script>
-
-                    <hr>
-                {{/each}}
-            </div>
-            <div hidden id="cartids">
-                {{cartids}}
-            </div>
-            <div class="card-footer">
-                <div class="pull-right" style="margin: 10px">
-                    <button onclick="window.location.href = '/checkout';" id="checkout" class="btn btn-success pull-right">Checkout</button>
-                    <div class="pull-right" style="margin: 5px">
-                        Total price: <b>${{totalPrice}}</b>
+                    <div class="col-3 col-sm-3 col-md-3 text-right">
+                        <button pid="update" class="btn btn-outline-primary btn-xs replace"><i class="fa fa-refresh fa-lg"
+                                aria-hidden="true"></i></button>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 text-right">
+                        <button id="singleDelete" class="btn btn-outline-danger btn-xs delete"> <i class="fa fa-trash fa-lg"
+                                aria-hidden="true"></i></button>
                     </div>
                 </div>
             </div>
+            <hr>
+            {{/each}}
         </div>
+        <div hidden id="cartids">
+            {{cartids}}
+        </div>
+        <div class="card-footer">
+            <div class="pull-right" style="margin: 10px">
+                <button onclick="window.location.href = '/checkout';" id="checkout"
+                    class="btn btn-success pull-right">Checkout</button>
+                <div class="pull-right" style="margin: 5px">
+                    Total price: <b>${{totalPrice}}</b>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<br><br><br>
+<br><br><br><br><br>
+
+<footer id="myFooter">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <i class="fas fa-dragon fa-5x"></i>
+            </div>
+            <div class="col-sm-2">
+                <h5>Get started</h5>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-2">
+                <h5>About us</h5>
+                <ul>
+                    <li><a href="#">Company Information</a></li>
+                    <li><a href="#">Contact us</a></li>
+                    <li><a href="#">Reviews</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-2">
+                <h5>Support</h5>
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Help desk</a></li>
+                    <li><a href="#">Forums</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-3" id="socialIcon">
+                <div class="text-center">
+                    <a class="btn btn-social-icon btn-google" href="http://google.com/+"><i
+                            class="fab fa-google-plus-square fa-2x"></i></a>
+                    <a class="btn btn-social-icon btn-facebook" href="http://www.facebook.com/profile.php?id="><i
+                            class="fab fa-facebook-square fa-2x"></i></i></a>
+                    <a class="btn btn-social-icon btn-twitter" href="http://twitter.com/"><i
+                            class="fab fa-twitter-square fa-2x"></i></a>
+                    <a class="btn btn-social-icon" href="mailto:"><i class="fas fa-envelope-square fa-2x"></i></a>
+                </div>
+                <button type="button" class="btn btn-default">Contact us</button>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright">
+        <p>© 2019 Copyright Shopping Cart System </p>
+    </div>
+</footer>
+
+<script src="/javascript/shoppingcart.js">
+</script>
+<script src="/javascript/checkadmin.js"></script>

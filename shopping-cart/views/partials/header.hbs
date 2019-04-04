@@ -11,10 +11,6 @@
         <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
       </li>
     </ul>
-    <span class="navbar-text" id="nav-admin">
-      <a href="/user/admin">Admin Settings
-       </a>
-    </span>
     <span class="navbar-text">
       <a href="/shoppingcart"><i class="fas fa-shopping-cart"></i> Shopping Cart
         <span class="badge">{{session.cart.totalQty}}</span>
@@ -29,12 +25,8 @@
         <a class="dropdown-item" href="/user/profile">Profile</a>
         <a class="dropdown-item" href="/user/settings">Settings</a>
         <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="/">Log out</a>
+        <a class="dropdown-item" href="/">Logout</a>
       </div>
     </span>
   </div>
 </nav>
-<script>
-  console.log("Header");
-  console.log(document.cookie);
-</script>

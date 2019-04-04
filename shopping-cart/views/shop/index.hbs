@@ -1,3 +1,42 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#"><i class="fas fa-dragon fa-lg"></i></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/products" style="font-family: cursive"><h3>PlayMaster</h3><span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+    <!--
+    <span class="navbar-text" id="nav-admin">
+      <a href="/user/admin">Admin Settings
+       </a>
+    </span>
+    -->
+    <span class="navbar-text">
+      <a href="/shoppingcart"><i class="fas fa-shopping-cart"></i> Shopping Cart
+        <span class="badge" style="background-color: grey; color: white">{{cartItem}}</span>
+      </a>
+    </span>
+    <span class="navbar-text dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-user-cog"></i> Hi, {{user.username}}
+      </a>
+      <div id="dropdown" class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <a class="dropdown-item" href="/user/profile">Profile</a>
+        <a class="dropdown-item" href="/user/settings">Settings</a>
+        <a class="dropdown-item" href="/user/admin" id="admindd" style="display:none;">Admin Settings</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" id="lgo "href="/">Logout</a>
+      </div>
+    </span>
+  </div>
+</nav>
 
 <div class="jumbotron">
     <hr class="my-4">
@@ -12,11 +51,11 @@
                                 alt="pic">
                             <div class="carousel-caption d-none d-md-block">
                                 <h2>
-                                    <font color="white">{{products.[1].name}}</font> <span class="badge badge-danger">HOT</span>
+                                    <a href="product/{{products.[1].id}}"><font color="white">{{products.[1].name}}</font></a> <span class="badge badge-danger">HOT</span>
                                     <span class="badge badge-pill badge-secondary">Free</span>
                                 </h2>
                                 <p class="d-none d-sm-block">
-                                    <font color="white">Add something here......
+                                    <font color="white">Come and get one!!!
                                 </p>
                                 </font>
                             </div>
@@ -27,12 +66,12 @@
                                 alt="pic">
                             <div class="carousel-caption d-none d-md-block">
                                 <h2>
-                                    <font color="white">{{products.[0].name}} </font><span
+                                    <a href="product/{{products.[0].id}}"><font color="white">{{products.[0].name}}</font></a> <span
                                         class="badge badge-danger">SPECIAL</span> <span
                                         class="badge badge-pill badge-secondary">$79.99</span>
                                 </h2>
                                 <p class="d-none d-sm-block">
-                                    <font color="white">Add something here......
+                                    <font color="white">You can not miss this one!!!
                                 </p>
                                 </font>
                                 </p>
@@ -44,12 +83,12 @@
                                 alt="pic">
                             <div class="carousel-caption d-none d-md-block">
                                 <h2>
-                                    <font color="white">{{products.[2].name}}</font> <span
+                                    <a href="product/{{products.[2].id}}"><font color="white">{{products.[2].name}}</font></a> <span
                                         class="badge badge-danger">NEW</span> <span
                                         class="badge badge-pill badge-secondary">$79.99</span>
                                 </h2>
                                 <p class="d-none d-sm-block">
-                                    <font color="white">Add something here......
+                                    <font color="white">New and fresh!!!
                                 </p>
                                 </font>
                                 </p>
@@ -79,12 +118,12 @@
             {{#each products}}
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail">
-                    <img src="{{this.imagePath}}" class="img-responsive" alt="monster hunter" height="280" width="220">
+                    <img src="{{this.imagePath}}" class="img-responsive rounded mx-auto d-block" alt="monster hunter" height="280" width="220">
                     <div class="caption">
-                        <a class="nav-link" href="/product/{{this.id}}">
+                        <a class="nav-link text-center" href="/product/{{this.id}}">
                             <h4>{{this.name}}</h4>
                         </a>
-                        <div class="clearfix">
+                        <div class="clearfix text-center">
                             <div class="price">${{this.price}}</div>
                             <p>
                                 <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -102,3 +141,45 @@
         
     </div>
 </div>
+
+<footer id="myFooter">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <br>
+                <i class="fas fa-dragon fa-5x"></i>
+            </div>
+            <div class="col-sm-2">
+                <h5>Get started</h5>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-2">
+                <h5>About us</h5>
+                <ul>
+                    <li><a href="#">Company Information</a></li>
+                    <li><a href="#">Contact us</a></li>
+                    <li><a href="#">Reviews</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-2">
+                <h5>Support</h5>
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Help desk</a></li>
+                    <li><a href="#">Forums</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-3" id="socialIcon">
+
+                <button type="button" class="btn btn-default">Contact us</button>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright">
+        <p>© 2019 Copyright PlayMaster inc. </p>
+    </div>
+</footer>
+<script src="/javascript/checkadmin.js">
+</script>

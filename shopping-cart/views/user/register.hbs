@@ -10,7 +10,7 @@
     <div class="container container-login100">
         <div class="wrap-login100 p-l-85 p-r-85 p-t-55 p-b-55">
             <form class="login100-form validate-form flex-sb flex-w">
-					<span class="login100-form-title p-b-32 display-1">
+					<span id="regtitle" class="login100-form-title p-b-32 display-1">
 						Register
 					</span>
                     <div class="wrap-input100 validate-input m-b-36" data-validate = "Username is required">
@@ -34,16 +34,18 @@
                     <span class="focus-input100"></span>
                     </div>
 					</form>
+                    <div id="error"></div>
                     <div class="container-login100-form-btn">
 						<button id="reg" onclick="register()" class="login100-form-btn">
 							Submit
 						</button>
                     </div>
-                    <div id="error" ></div>
+                    <div id="backtologin">
+                    Already have An Account? <a href="/">Login</a>.
+                    </div>
 
 </div>
 </div>
-<div id="error"></div>
 </body>
 
 <script>
@@ -61,11 +63,14 @@ function register(){
         error.textContent ="Please fill in all text boxes.";
         return
     }
+    if(user==pass){
+        error.textContent = "Username And Password cannot be the same.";
+        return
+    }
     let req = new XMLHttpRequest();
     req.open('POST', '/user/register');
     req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
     req.responseType = 'json';
-
     req.onload = function(evt) { 
         let res = req.response;
         if(res.ok){
