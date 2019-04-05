@@ -1,5 +1,9 @@
 
 
+html{
+    overflow-y:scroll;
+}
+
 .thumbnail img {
     max-height: 250px; 
      
@@ -505,3 +509,39 @@
     width: 100%;
     border: 1px solid #F2F2F2;
 }
+
+div#settings{
+    text-align: center;
+}
+div#settings-b{
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+div#settings-b button{
+    margin-bottom: 10px;
+    width:200px;
+    height:40px;
+
+}#demo1 label{
+    text-align: right;
+    width: 180px;
+}
+.h3-profile{
+    text-align: center;
+    width:200px;
+}
+#prof-cont{
+    border: solid thin black;
+    margin-top:10px;
+    width:400px;
+    margin-bottom:20px;
+    margin-left:auto;
+    margin-right:auto;
+    text-align: center;
+}
+#profContent{
+    text-align: center;
+}
+#gamedisplay{
+    margin-bottom: 10px;
+    

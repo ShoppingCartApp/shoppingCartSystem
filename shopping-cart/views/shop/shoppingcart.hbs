@@ -24,7 +24,7 @@
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="/user/profile">Profile</a>
                 <a class="dropdown-item" href="/user/settings">Settings</a>
-                <a class="dropdown-item" href="/user/admin">Admin Settings</a>
+                <a class="dropdown-item" href="/user/admin" id="admindd" style="display:none;">Admin Settings</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="/">Logout</a>
             </div>
@@ -83,7 +83,7 @@
         </div>
         <div class="card-footer">
             <div class="pull-right" style="margin: 10px">
-                <button onclick="window.location.href = '/checkout';" id="checkout"
+                <button id="checkout" onclick="window.location.href = '/checkout';"
                     class="btn btn-success pull-right">Checkout</button>
                 <div class="pull-right" style="margin: 5px">
                     Total price: <b>${{totalPrice}}</b>
@@ -144,3 +144,4 @@
 
 <script src="/javascript/shoppingcart.js">
 </script>
+<script src="/javascript/checkadmin.js"></script>

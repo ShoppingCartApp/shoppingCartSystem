@@ -1,10 +1,51 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#"><i class="fas fa-dragon fa-lg"></i></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/products" style="font-family: cursive"><h3>PlayMaster</h3><span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+    <!--
+    <span class="navbar-text" id="nav-admin">
+      <a href="/user/admin">Admin Settings
+       </a>
+    </span>
+    -->
+    <span class="navbar-text">
+      <a href="/shoppingcart"><i class="fas fa-shopping-cart"></i> Shopping Cart
+        <span class="badge" style="background-color: grey; color: white">{{cartItem}}</span>
+      </a>
+    </span>
+    <span class="navbar-text dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-user-cog"></i> Hi, {{this.username.username}}
+      </a>
+      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <a class="dropdown-item" href="/user/profile">Profile</a>
+        <a class="dropdown-item" href="/user/settings">Settings</a>
+        <a class="dropdown-item" href="/user/admin" id="admindd" style="display:none;">Admin Settings</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="/">Logout</a>
+      </div>
+    </span>
+  </div>
+</nav>
+
 <div class="container">
-
-    <h1>{{FName}}</h1>
-
-
-
-
+    <div  id="prof-cont">
+    <h3 class="h3-profile">Username: <label>{{this.username.username}}</h3><br>
+    <h3 class="h3-profile">Name: {{this.username.FName}} {{this.username.LName}}</h3><br>
+    <h3 class="h3-profile">Email: {{this.username.Email}}</h3><br>
+    <a href="/user/settings" class="set-submit" id="change-user">Change Information</a>
+    <div id="error-msg2"></div>
+    </div>
 
 
     <h1>Your Games</h1>
@@ -34,3 +75,4 @@
         
     </div>
 </div>
+<script src="/javascript/checkadmin.js"></script>

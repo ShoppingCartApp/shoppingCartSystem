@@ -53,4 +53,27 @@
             req.send(JSON.stringify(msg));
         });
     }
+
+    const checkoutButton = document.getElementById('checkout');
+    checkoutButton.addEventListener('click', (evt) => {
+        console.log("checkout button clicked");
+
+        let req = new XMLHttpRequest();
+        req.open('GET', `/checkout`);
+        req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+        req.responseType = 'json';
+        req.onload = function (evt) {
+            if (req.status == 200) { // check for ok response
+                const resp = req.response;
+                if (resp.checkout == false) {
+                    window.alert("No items in your shopping cart");
+                    location.reload();
+                }
+            }
+            else {
+                console.log('err', req);
+            }
+        };
+        req.send();
+    });
 }());
