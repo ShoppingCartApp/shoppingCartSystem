@@ -528,7 +528,8 @@ div#settings-b button{
 }
 .h3-profile{
     text-align: center;
-    width:200px;
+    width:400px;
+    font-size:20px;
 }
 #prof-cont{
     border: solid thin black;
@@ -544,4 +545,7 @@ div#settings-b button{
 }
 #gamedisplay{
     margin-bottom: 10px;
-    
+}
+#game-profile{
+    text-align: center;
+} 

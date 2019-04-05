@@ -61,6 +61,9 @@ function register(){
         error.textContent ="Please fill in all text boxes.";
         return
     }
+    else if(user == pass){
+        error.textContent = "Username and Password must be different.";
+    }
     let req = new XMLHttpRequest();
     req.open('POST', '/user/register');
     req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');

@@ -1,3 +1,42 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#"><i class="fas fa-dragon fa-lg"></i></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/products" style="font-family: cursive"><h3>PlayMaster</h3><span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+    <!--
+    <span class="navbar-text" id="nav-admin">
+      <a href="/user/admin">Admin Settings
+       </a>
+    </span>
+    -->
+    <span class="navbar-text">
+      <a href="/shoppingcart"><i class="fas fa-shopping-cart"></i> Shopping Cart
+        <span class="badge" style="background-color: grey; color: white">{{cartItem}}</span>
+      </a>
+    </span>
+    <span class="navbar-text dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-user-cog"></i> Hi {{user.username}}
+      </a>
+      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <a class="dropdown-item" href="/user/profile">Profile</a>
+        <a class="dropdown-item" href="/user/settings">Settings</a>
+        <a class="dropdown-item" href="/user/admin" id="admindd" style="display:none;">Admin Settings</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="/">Logout</a>
+      </div>
+    </span>
+  </div>
+</nav>
 <div id="settings">
 <h1 id="settings-title"><u>Account Settings</u></h1>
 <div id="settings-b">
@@ -33,6 +72,52 @@
 </div>
 </div>
 </div>
+<footer id="myFooter">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-3">
+        <i class="fas fa-dragon fa-5x"></i>
+      </div>
+      <div class="col-sm-2">
+        <h5>Get started</h5>
+        <ul>
+          <li><a href="#">Home</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-2">
+        <h5>About us</h5>
+        <ul>
+          <li><a href="#">Company Information</a></li>
+          <li><a href="#">Contact us</a></li>
+          <li><a href="#">Reviews</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-2">
+        <h5>Support</h5>
+        <ul>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Help desk</a></li>
+          <li><a href="#">Forums</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-3" id="socialIcon">
+        <div class="text-center">
+          <a class="btn btn-social-icon btn-google" href="http://google.com/+"><i
+              class="fab fa-google-plus-square fa-2x"></i></a>
+          <a class="btn btn-social-icon btn-facebook" href="http://www.facebook.com/profile.php?id="><i
+              class="fab fa-facebook-square fa-2x"></i></i></a>
+          <a class="btn btn-social-icon btn-twitter" href="http://twitter.com/"><i
+              class="fab fa-twitter-square fa-2x"></i></a>
+          <a class="btn btn-social-icon" href="mailto:"><i class="fas fa-envelope-square fa-2x"></i></a>
+        </div>
+        <button type="button" class="btn btn-default">Contact us</button>
+      </div>
+    </div>
+  </div>
+  <div class="footer-copyright">
+    <p>© 2019 Copyright Shopping Cart System </p>
+  </div>
+</footer>
 <script>
 //------------------Change Username
 let usern = document.getElementById('change-user');
@@ -172,3 +257,4 @@ cemail.addEventListener('click', (evt) => {
     }
 });
 </script>
+<script src="/javascript/checkadmin.js"></script>

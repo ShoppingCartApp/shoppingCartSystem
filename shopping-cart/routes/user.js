@@ -45,7 +45,8 @@ router.get('/user/login/:id(\\d+)', function (req, res) { //currently not used i
 });
 router.get('/user/settings', function (req, res, next) {
   res.render('user/settings', {
-    title: "Settings"
+    title: "Settings",
+    username:req.session.user.username
   });
 });
 // User login function
@@ -225,8 +226,14 @@ router.post('/user/admin', jsonParser, function (req, res, next) {
   if (u.op == "delete") {
     userdb.run('DELETE FROM users WHERE username = ?', [u.username], function (err, row) {
       if (!err) {
-        //console.log('deleted');
-        generate_users(res);
+        userdb.all(`SELECT rowid,* FROM users`, [], function (err, rows) {
+        res.type('.html'); // set content type to html
+        res.render('user/admin', {
+          users: rows,
+          title: 'Admin Page',
+          username: req.session.user.username
+        });
+      });
       } else {
         res.send(JSON.stringify({
           ok: false
@@ -236,12 +243,7 @@ router.post('/user/admin', jsonParser, function (req, res, next) {
   }
 
   if (u.op == "update") {
-    //console.log(u);
-    //console.log(u.username);
-    //console.log(u.FName);
-    //console.log(u.LName);
-    //console.log(u.Email);
-    //console.log(u.id);
+
     let passw = sha256(u.password);
     userdb.run('UPDATE users SET username=?,password=?,FName=?,LName=?,Email=? WHERE rowid=?', [u.username, passw, u.FName, u.LName,
       u.Email, u.id

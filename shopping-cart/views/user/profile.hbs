@@ -40,15 +40,15 @@
 
 <div class="container">
     <div  id="prof-cont">
-    <h3 class="h3-profile">Username: <label>{{this.username.username}}</h3><br>
-    <h3 class="h3-profile">Name: {{this.username.FName}} {{this.username.LName}}</h3><br>
-    <h3 class="h3-profile">Email: {{this.username.Email}}</h3><br>
+    <label class="h3-profile">Username: <label>{{this.username.username}}</label><br>
+    <label class="h3-profile">Name: {{this.username.FName}} {{this.username.LName}}</label><br>
+    <label class="h3-profile">Email: {{this.username.Email}}</label><br>
     <a href="/user/settings" class="set-submit" id="change-user">Change Information</a>
     <div id="error-msg2"></div>
     </div>
 
 
-    <h1>Your Games</h1>
+    <h1 id="game-profile">Your Games</h1>
     <div class="row">
         {{#each product}}
             <div class="col-sm-6 col-md-4">
@@ -75,4 +75,50 @@
         
     </div>
 </div>
+<footer id="myFooter">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-3">
+        <i class="fas fa-dragon fa-5x"></i>
+      </div>
+      <div class="col-sm-2">
+        <h5>Get started</h5>
+        <ul>
+          <li><a href="#">Home</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-2">
+        <h5>About us</h5>
+        <ul>
+          <li><a href="#">Company Information</a></li>
+          <li><a href="#">Contact us</a></li>
+          <li><a href="#">Reviews</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-2">
+        <h5>Support</h5>
+        <ul>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Help desk</a></li>
+          <li><a href="#">Forums</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-3" id="socialIcon">
+        <div class="text-center">
+          <a class="btn btn-social-icon btn-google" href="http://google.com/+"><i
+              class="fab fa-google-plus-square fa-2x"></i></a>
+          <a class="btn btn-social-icon btn-facebook" href="http://www.facebook.com/profile.php?id="><i
+              class="fab fa-facebook-square fa-2x"></i></i></a>
+          <a class="btn btn-social-icon btn-twitter" href="http://twitter.com/"><i
+              class="fab fa-twitter-square fa-2x"></i></a>
+          <a class="btn btn-social-icon" href="mailto:"><i class="fas fa-envelope-square fa-2x"></i></a>
+        </div>
+        <button type="button" class="btn btn-default">Contact us</button>
+      </div>
+    </div>
+  </div>
+  <div class="footer-copyright">
+    <p>© 2019 Copyright Shopping Cart System </p>
+  </div>
+</footer>
 <script src="/javascript/checkadmin.js"></script>
