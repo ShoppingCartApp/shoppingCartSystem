@@ -23,31 +23,38 @@ router.get('/products', function (req, res, next) {
     });
   }
   else {
-    res.render('user/not_auth', {
-      title: "Not Auth"
+    res.render("user/not_auth", {
+      title: 'Not login'
     })
   }
 });
 
 router.get('/product/:id', function (req, res, next) {
   let id = parseInt(req.params.id);
-  db.get('SELECT * FROM products WHERE id=?', [id], function (err, row) {
-    if (!err) {
-      reviewdb.all('SELECT * FROM reviews WHERE product_id=?', [id], function(err, reviews) {
-        if(!err) {
-          let length = reviews.length;
-          res.type('.html'); // set content type to html
-          res.render('shop/product', {
-            title: 'Product Page',
-            product: row,
-            reviews: reviews,
-            reviewsNum: length,
-            user: req.session.user
-          });
-        }
-      });
-    }
-  });
+  if (req.session.islogin == true) {
+    db.get('SELECT * FROM products WHERE id=?', [id], function (err, row) {
+      if (!err) {
+        reviewdb.all('SELECT * FROM reviews WHERE product_id=?', [id], function(err, reviews) {
+          if(!err) {
+            let length = reviews.length;
+            res.type('.html'); // set content type to html
+            res.render('shop/product', {
+              title: 'Product Page',
+              product: row,
+              reviews: reviews,
+              reviewsNum: length,
+              user: req.session.user
+            });
+          }
+        });
+      }
+    });
+  }
+  else {
+    res.render("user/not_auth", {
+      title: 'Not login'
+    })
+  }
 });
 
 router.post('/rating', jsonParser, function (req, res, next) {
@@ -128,22 +135,29 @@ router.post('/review', jsonParser, function(req, res, next) {
 
 
 router.get('/shoppingcart', function (req, res, next) {
-  let totalPrice = 0;
-  cartdb.all('SELECT * FROM cart WHERE username=?', [req.session.user.username], function (err, rows) {
-    if (!err) {
-      for (let i = 0; i < rows.length; i++) {
-        totalPrice += rows[i].product_price * rows[i].product_qty;
-        totalPrice = Math.round(totalPrice * 100) / 100;
+  if (req.session.islogin == true) {
+    let totalPrice = 0;
+    cartdb.all('SELECT * FROM cart WHERE username=?', [req.session.user.username], function (err, rows) {
+      if (!err) {
+        for (let i = 0; i < rows.length; i++) {
+          totalPrice += rows[i].product_price * rows[i].product_qty;
+          totalPrice = Math.round(totalPrice * 100) / 100;
+        }
+        res.type('.html'); // set content type to html
+        res.render('shop/shoppingcart', {
+          title: 'Shopping-cart',
+          products: rows,
+          totalPrice: totalPrice,
+          user: req.session.user
+        });
       }
-      res.type('.html'); // set content type to html
-      res.render('shop/shoppingcart', {
-        title: 'Shopping-cart',
-        products: rows,
-        totalPrice: totalPrice,
-        user: req.session.user
-      });
-    }
-  });
+    });
+  }
+  else {
+    res.render("user/not_auth", {
+      title: 'Not login'
+    })
+  }
 });
 
 router.post('/deleteSingleProduct',jsonParser, function (req, res, next) {
@@ -214,17 +228,22 @@ router.get('/checkout', jsonParser, function (req, res, next) {
   let totalPrice = 0;
   cartdb.all('SELECT * FROM cart WHERE username=?', [req.session.user.username], function (err, rows) {
     if (!err) {
-      req.session.bought = rows;
-      for (let i = 0; i < rows.length; i++) {
-        totalPrice += rows[i].product_price * rows[i].product_qty;
-        totalPrice = Math.round(totalPrice * 100) / 100;
+      if (rows.length != 0) {
+        req.session.bought = rows;
+        for (let i = 0; i < rows.length; i++) {
+          totalPrice += rows[i].product_price * rows[i].product_qty;
+          totalPrice = Math.round(totalPrice * 100) / 100;
+        }
+        res.render('shop/checkout', {
+          title: 'Check Out',
+          items: rows,
+          user: req.session.user,
+          totalPrice: totalPrice
+        });
       }
-      res.render('shop/checkout', {
-        title: 'Check Out',
-        items: rows,
-        user: req.session.user,
-        totalPrice: totalPrice
-      });
+      else {
+        res.send({checkout: false});
+      }
     }
   });
 });
@@ -233,8 +252,8 @@ router.delete('/checkoutsuccessfully', jsonParser, function (req, res, next) {
   cartdb.all('SELECT * FROM cart WHERE username=?',[req.session.user.username],function(err,rows){
     if(!err){
       for (let i = 0; i < rows.length; i++) {
-        console.log('i: '+rows.length);
-        console.log(rows[i].item_id+' '+rows[i].username+' '+rows[i].product_id+' '+rows[i].product_name+' '+rows[i].product_image)
+        //console.log('i: '+rows.length);
+        //console.log(rows[i].item_id+' '+rows[i].username+' '+rows[i].product_id+' '+rows[i].product_name+' '+rows[i].product_image)
       userproductdb.run('INSERT INTO userproducts(username,product_id,product_name,product_image) VALUES(?,?,?,?)',
       [rows[i].username,rows[i].product_id,rows[i].product_name,rows[i].product_image],function(err){
         if(err){

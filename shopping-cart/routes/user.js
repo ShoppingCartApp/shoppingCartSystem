@@ -8,6 +8,7 @@ const sha256 = require('sha-256-js');
 var userproductdb = require('../models/userproductdb');
 
 router.get('/', function (req, res, next) {
+  req.session.islogin = false;
   res.render('user/login', {
     title: "Login Page",
     layout: false
@@ -50,7 +51,7 @@ router.get('/user/settings', function (req, res, next) {
 // User login function
 router.post('/login', jsonParser, function (req, res) {
   const u = req.body;
-  console.log(u);
+  //console.log(u);
 
   userdb.get('SELECT * FROM users WHERE username = ?',
     [u.username],
@@ -61,7 +62,8 @@ router.post('/login', jsonParser, function (req, res) {
         if (row) {
           console.log('row checked');
           if (sha256(u.password) == row.password) {
-            req.session.user = u;
+
+            req.session.user = row;
             req.session.islogin = true;
             res.send(JSON.stringify({
               ok: true
@@ -88,7 +90,7 @@ router.post('/login', jsonParser, function (req, res) {
 //User Register function
 router.post('/user/register', jsonParser, function (req, res, next) {
   var u = req.body;
-  console.log(u);
+  //console.log(u);
   userdb.get('SELECT * from users where username=?', [u.username], function (err, row) {
     if (row) {
       console.log('taken');
@@ -97,7 +99,7 @@ router.post('/user/register', jsonParser, function (req, res, next) {
         err: "Username Taken"
       });
     } else {
-      userdb.run('INSERT INTO users(username,password,FName,LName,Email,admin,cartItem) VALUES(?,?,?,?,?,?,?);', [u.username, sha256(u.password), u.FName, u.LName, u.email, 0, 0]);
+      userdb.run('INSERT INTO users(username,password,FName,LName,Email,admin) VALUES(?,?,?,?,?,?);', [u.username, sha256(u.password), u.FName, u.LName, u.email, 0]);
       console.log('inserted');
       res.send({
         ok: true
@@ -108,7 +110,7 @@ router.post('/user/register', jsonParser, function (req, res, next) {
 //User change password function, ---called by settings.
 router.post('/changePassword', jsonParser, function (req, res, next) {
   var u = req.body;
-  console.log(u);
+  //console.log(u);
   userdb.get('SELECT * FROM users WHERE username = ?', [req.session.user.username], function (err, row) {
     console.log('row: ' + row);
     if (!err) {
@@ -141,7 +143,7 @@ router.post('/changePassword', jsonParser, function (req, res, next) {
 //User change username function ---Called by settings.
 router.post('/changeUsername', jsonParser, function (req, res, next) {
   var u = req.body;
-  console.log(u);
+  //console.log(u);
   userdb.get('SELECT * from users where username=?', [u.username], function (err, row) {
     if (row) {
       console.log('taken');
@@ -172,7 +174,7 @@ router.post('/changeUsername', jsonParser, function (req, res, next) {
 //User change name function ---Called by settings.
 router.post('/changeName', jsonParser, function (req, res, next) {
   var u = req.body;
-  console.log(u);
+  //console.log(u);
   userdb.get('UPDATE users SET Fname=?, Lname=? WHERE username = ?', [u.Fname, u.Lname, req.session.user.username], function (err, row) {
     if (err) {
       res.send(JSON.stringify({
@@ -188,7 +190,7 @@ router.post('/changeName', jsonParser, function (req, res, next) {
 //User change email function ---Called by settings.
 router.post('/changeEmail', jsonParser, function (req, res, next) {
   var u = req.body;
-  console.log(u);
+  //console.log(u);
   userdb.get('UPDATE users SET email=? WHERE username = ?', [u.email, req.session.user.username], function (err, row) {
     if (err) {
       res.send(JSON.stringify({
@@ -202,21 +204,18 @@ router.post('/changeEmail', jsonParser, function (req, res, next) {
   });
 });
 
-function generate_users(res) {
+//Get Admin page
+router.get('/user/admin', function (req, res, next) {
   userdb.all(`SELECT rowid,* FROM users`, [], function (err, rows) {
     if (!err) {
       res.type('.html'); // set content type to html
       res.render('user/admin', {
         users: rows,
-        title: 'Admin Page'
+        title: 'Admin Page',
+        username: req.session.user.username
       });
     }
   });
-}
-
-//Get Admin page
-router.get('/user/admin', function (req, res, next) {
-  generate_users(res);
 });
 
 
@@ -226,7 +225,7 @@ router.post('/user/admin', jsonParser, function (req, res, next) {
   if (u.op == "delete") {
     userdb.run('DELETE FROM users WHERE username = ?', [u.username], function (err, row) {
       if (!err) {
-        console.log('deleted');
+        //console.log('deleted');
         generate_users(res);
       } else {
         res.send(JSON.stringify({
@@ -237,18 +236,18 @@ router.post('/user/admin', jsonParser, function (req, res, next) {
   }
 
   if (u.op == "update") {
-    console.log(u);
-    console.log(u.username);
-    console.log(u.FName);
-    console.log(u.LName);
-    console.log(u.Email);
-    console.log(u.id);
+    //console.log(u);
+    //console.log(u.username);
+    //console.log(u.FName);
+    //console.log(u.LName);
+    //console.log(u.Email);
+    //console.log(u.id);
     let passw = sha256(u.password);
     userdb.run('UPDATE users SET username=?,password=?,FName=?,LName=?,Email=? WHERE rowid=?', [u.username, passw, u.FName, u.LName,
       u.Email, u.id
     ], function (err, row) {
       if (!err) {
-        console.log('updated');
+        //console.log('updated');
         generate_users(res);
       } else {
         res.send(JSON.stringify({
@@ -264,10 +263,10 @@ router.get('/user/profile', function (req, res, next) {
     if (!err) {
       userdb.all(`SELECT * FROM users WHERE username=?`, [req.session.user.username], function (err, rows1) {
         if (!err) {
-          console.log(rows1);
+          //console.log(rows1);
           res.type('.html'); // set content type to html
           res.render('user/profile', {
-            user: rows1,
+            username:rows1[0],
             product: rows,
             title: 'Profile'
           });
@@ -280,4 +279,18 @@ router.get('/user/profile', function (req, res, next) {
     }
   });
 });
+
+router.get('/checkAdmin', function (req, res, next) {
+    //console.log(req.session.user);
+    if(req.session.user.admin == 1){
+      console.log('admin = true');
+      res.send({ok:true});
+    }
+    else{
+      console.log('admin = false');
+      res.send({ok:false});
+    }
+});
+
+
 module.exports = router;

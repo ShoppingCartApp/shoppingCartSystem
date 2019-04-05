@@ -11,27 +11,30 @@
 <body>
 	<div class="limiter">
 		<div class="container container-login100">
-			<div class="wrap-login100 p-l-85 p-r-85 p-t-55 p-b-55">
 
+			<div class="wrap-login100 p-l-85 p-r-85 p-t-55 p-b-55">
+								<div id="dragon-logo">
+			<div class="fas fa-dragon fa-7x" id="login-logo"></div>
+				<h2 style="font-family: cursive"> PlayMaster</h2>
+			</div>
 					<span class="login100-form-title p-b-32 display-1">
-						Account Login
+						Login
 					</span>
 
 					<div class="wrap-input100-l validate-input m-b-36" data-validate = "Username is required">
 						<input id="user" placeholder="Username" class="input100" type="text" name="username" >
-						<span class="focus-input100"></span>
-					</div>
 
-					<div class="wrap-input100-l validate-input m-b-12" data-validate = "Password is required">
+					</div><br>
+
+					<div class="wrap-input100-l validate-input m-b-12" id="passcon" data-validate = "Password is required">
 						<span class="btn-show-pass">
-							<i class="fa fa-eye"></i>
 						</span>
 						<input class="input100" id="pass" placeholder="Password" type="password" name="pass" >
-						<span class="focus-input100"></span>
-					</div>
 
+					</div>
+					<div id="error-msg"></div>
 					<div class="container-login100-form-btn">
-						<button id="login" class="login100-form-btn">
+						<button id="login" onclick="login();" class="login100-form-btn">
 							Login
 						</button>
             		
@@ -48,10 +51,16 @@
 	<div id="dropDownSelect1"></div>
 </body>
 <script>
-  let login = document.getElementById('login');
-  login.addEventListener('click',function(evt){
+	
+function login(){
     let user = document.getElementById('user').value;
     let pass = document.getElementById('pass').value;
+		let errormsg = document.getElementById('error-msg');
+		if( user=="" || pass==""){
+			console.log('found');
+			errormsg.textContent = "Please enter a username and password";
+			return
+		}
     let obj = {username:user,password:pass};
     let login=document.getElementById('login');
     let req = new XMLHttpRequest();
@@ -66,12 +75,13 @@
         window.location.href="/products";
       }
       else if(res.ok == false){
-        window.alert("Username or Password Incorrect. Try again.");
+        errormsg.textContent="Username or Password Incorrect. Try again.";
+				return
       }
      };
      console.log('sent');
     req.send( JSON.stringify( obj ));
-  });
+	}
 </script>
     <script src="http://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>

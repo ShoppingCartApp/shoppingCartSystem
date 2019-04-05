@@ -149,7 +149,10 @@ iframe {
   background-color: #ebebeb;
 }
 
-
+#error-msg{
+  margin-bottom:10px;
+  text-align:center;
+}
 .wrap-login100 {
   width: 560px;
   background: #fff;
@@ -157,7 +160,11 @@ iframe {
   position: relative;
 }
 #reg{
+  margin-top:10px;
   margin-left:200px;
+}
+#backtologin{
+  text-align: center;
 }
 
 /*==================================================================
@@ -175,7 +182,7 @@ iframe {
   line-height: 1.2;
   text-transform: uppercase;
   text-align: center;
-  margin-bottom:50px;
+  margin-top:10px;
   width: 100%;
   display: block;
 }
@@ -196,13 +203,14 @@ iframe {
   margin-bottom: 10px;
 }
 .wrap-input100-l {
-  width: 100%;
+  width: 60%;
   position: relative;
   background-color: #fff;
   border: 1px solid #e6e6e6;
   border-radius: 2px;
-  margin-bottom: 30px;
+  margin-left:110px;
 }
+
 .wrap-input100-r {
   width: 100%;
   position: relative;
@@ -268,8 +276,13 @@ iframe {
   display: -ms-flexbox;
   display: flex;
   flex-wrap: wrap;
+  margin-bottom:10px;
 
 }
+#error{
+  text-align: center;
+}
+
 #login{
   margin-left: 120px;
 }
@@ -308,12 +321,20 @@ iframe {
 
 .validate-input {
   position: relative;
+  margin-left:110px;
+  width:60%;
 }
+#regtitle{
+  margin-bottom:10px;
+  }
 
+#p
 .alert-validate .btn-show-pass {
   visibility: hidden;
 }
-
+#passcon{
+  margin-bottom:10px;
+}
 .alert-validate::before {
   content: attr(data-validate);
   position: absolute;
@@ -374,12 +395,15 @@ iframe {
   }
 }
 
-
-/*//////////////////////////////////////////////////////////////////
-[ Responsive ]*/
+#dragon-logo{
+  margin-top:30px;
+  text-align: center;
+  margin-bottom: 60px;
+}
 
 @media (max-width: 576px) {
   .wrap-login100 {
     padding-left: 15px;
     padding-right: 15px;
   }
+}

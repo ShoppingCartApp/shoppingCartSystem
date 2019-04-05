@@ -6,8 +6,6 @@ var logger = require('morgan');
 var expressHbs = require('express-handlebars');
 const cookieSession = require('cookie-session');
 var session = require('express-session');
-var flash = require('connect-flash');
-var SqliteStore = require('connect-sqlite3')(session);
 
 var userRouter = require('./routes/user');
 var indexRouter = require('./routes/index');

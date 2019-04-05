@@ -37,8 +37,47 @@ text-align: center;
     margin-top:20px;
 }
 </style>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#"><i class="fas fa-dragon fa-lg"></i></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/products" style="font-family: cursive"><h3>PlayMaster</h3><span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+    <!--
+    <span class="navbar-text" id="nav-admin">
+      <a href="/user/admin">Admin Settings
+       </a>
+    </span>
+    -->
+    <span class="navbar-text">
+      <a href="/shoppingcart"><i class="fas fa-shopping-cart"></i> Shopping Cart
+        <span class="badge" style="background-color: grey; color: white">{{cartItem}}</span>
+      </a>
+    </span>
+    <span class="navbar-text dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-user-cog"></i> Hi {{username}}
+      </a>
+      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <a class="dropdown-item" href="/user/profile">Profile</a>
+        <a class="dropdown-item" href="/user/settings">Settings</a>
+        <a class="dropdown-item" href="/user/admin" id="admindd" style="display:none;">Admin Settings</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="/">Logout</a>
+      </div>
+    </span>
+  </div>
+</nav>
 <table id="admin-tab" class="admin-ul" style="font-size: 14px;">
-    <tr><th>Username</th><th>Password</th><th>First Name</th><th>Last Name</th><th>Email</th><th>Admin</th><th>Update</th><th>Delete</th></delete></tr>
+    <tr><th>Username</th><th>Password</th><th>First Name</th><th>Last Name</th><th>Email</th><!--<th>Admin</th>--><th>Update</th><th>Delete</th></delete></tr>
     {{#each users}}
             <form method=post class="admin-c">
                 <tr> 
@@ -50,42 +89,74 @@ text-align: center;
                <td><input id="name"type=text name="LName" size=16 value="{{LName}}"></td>
                 <input type="hidden" name="id" name="rowid" value={{rowid}}>
                 <td><input id="email" type=text name="Email" size=16 value="{{Email}}"></td>
-                <td><input type="checkbox" id="adminC" disabled="disabled" name="admin" value="{{admin}}"></td>
+                <!--<td><input type="checkbox" id="adminC" disabled="disabled" name="admin" value="{{admin}}"></td>-->
                 <td><input type=submit name="op" value="update"></td>
                 <td><input type=submit name="op" value="delete"></td>
             </form>
             </tr>
-            <!---
-            <div id="container">
-                <div id="container-b">
-            <form method=post class="admin-c">
-                <label>Username:</label> 
-                <input id="username-f" type=text name="username" size=16 value="{{username}}"><br>
-                <label>Password:</label>
-                <input id="pass-f" type=text name="password" size=16 value="{{password}}"><br>
-                <label>First Name:</label> 
-                <input id="name"type=text name="FName" size=16 value="{{FName}}"><br>
-                <label>Last Name:</label>
-                <input id="name"type=text name="LName" size=16 value="{{LName}}"><br>
-                <label>Email:</label>
-                <input type="hidden" name="id" value={{rowid}}>
-                <input id="email" type=text name="Email" size=16 value="{{Email}}"><br>
-                <input type="hidden" name="password" value={{password}}><br>
-                <input type=submit name="op" value="update"><br>
-                <input type=submit name="op" value="delete"><br>
-            </form>
-             
-                <a href="#">Close</a>
-        </div>
-</div>
--->
     {{/each}}
 </table>
+<br><br><br><br><br>
+<br><br><br><br><br>
+<footer id="myFooter">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <br>
+                <i class="fas fa-dragon fa-5x"></i>
+            </div>
+            <div class="col-sm-2">
+                <h5>Get started</h5>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-2">
+                <h5>About us</h5>
+                <ul>
+                    <li><a href="#">Company Information</a></li>
+                    <li><a href="#">Contact us</a></li>
+                    <li><a href="#">Reviews</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-2">
+                <h5>Support</h5>
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Help desk</a></li>
+                    <li><a href="#">Forums</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-3" id="socialIcon">
+                <div class="text-center">
+                    <a class="btn btn-social-icon btn-google" href="http://google.com/+"><i
+                            class="fab fa-google-plus-square fa-2x"></i></a>
+                    <a class="btn btn-social-icon btn-facebook" href="http://www.facebook.com/profile.php?id="><i
+                            class="fab fa-facebook-square fa-2x"></i></i></a>
+                    <a class="btn btn-social-icon btn-twitter" href="http://twitter.com/"><i
+                            class="fab fa-twitter-square fa-2x"></i></a>
+                    <a class="btn btn-social-icon" href="mailto:"><i class="fas fa-envelope-square fa-2x"></i></a>
+                </div>
+                <button type="button" class="btn btn-default">Contact us</button>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright">
+        <p>© 2019 Copyright Shopping Cart System </p>
+    </div>
+</footer>
 
 <script>
-function check(a){
+    function commit(){
+        if(confirm("Are you sure you want to make this change?")==true){
+            return true;
+        }
+        else{
+            document.location.reload();
+            return false;
+        }   
+    }
+
     
-        console.log(1);
-    
-}
 </script>
+

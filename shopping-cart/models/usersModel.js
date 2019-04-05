@@ -10,8 +10,7 @@ const db = new sqlite3.Database( __dirname + '/users.db',
                 FName TEXT,
                 LName TEXT,
                 Email TEXT,
-                admin INTEGER,
-                cartItem INTEGER
+                admin INTEGER
             )`);
             console.log('opened users.db');
         }
